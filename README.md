@@ -6,7 +6,7 @@
   - Technology Stack
 2. Clone and setup
     1. Clone the project's repository
-        Run ``git clone git@github.com:TanDao01262000/Question-Blueprint.git``
+        Run ``git clone git@github.com:SJSU-CMPE133-2023-Spring/Question-Blueprint.git``
     2. Set up a virtual environment
         1. Install "virtualenv" library
             Run ``pip install virtualenv``
