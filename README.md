@@ -24,6 +24,7 @@
     2. Respond to a question
     3. Search a question
     4. ...
-4. Database Schema
+4. [Database Schema](https://user-images.githubusercontent.com/67533883/223827059-2f8bccaa-8d35-4a56-9344-df8c01d76460.png)
+
 5. API Documentations
 6. Deployment 
