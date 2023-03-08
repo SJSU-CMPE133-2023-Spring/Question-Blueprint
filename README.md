@@ -13,6 +13,7 @@
       3. Activate the virtual environment by running the following command:
         For Windows: ``<env_name>\Scripts\activate`` 
         For Unix or Linux: ``source <env_name>/bin/activate``  
+  2. 
 3. Usage
 4. Database Schema
 5. API Documentations
