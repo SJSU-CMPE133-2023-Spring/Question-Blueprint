@@ -5,7 +5,7 @@
   - Key Features
   - Technology Stack
 2. Installation and Setup
-  1. Set up a virtual environment
+    1. Set up a virtual environment
       1. Install virtualenv by running the following command:
       ``pip install virtualenv``
       2. Create a virtual environment by running the following command:
