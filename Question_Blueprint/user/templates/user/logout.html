@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Logout{% endblock %}
+
+{% block content %}
+<div class="container-fluid d-flex align-items-center justify-content-center py-5">
+  <div class="row justify-content-center" style="min-width: 50%;"   >
+    <div class="col mx-auto">
+      <div class="card shadow-lg p-4">
+        {% if user.is_authenticated %}
+        <h1 class="text-center mb-4">Goodbye, {{ user.username }}!</h1>
+        <p class="text-center">You have successfully logged out!</p>
+        <div class="text-center">
+          <a href="{% url 'login' %}" class="btn btn-primary mr-2">Login</a>
+          <a href="{% url 'register' %}" class="btn btn-secondary">Register</a>
+        </div>
+        {% else %}
+        <h1 class="text-center mb-4">You're not logged in!</h1>
+        <p class="text-center">Please log in to continue.</p>
+        <div class="text-center">
+          <a href="{% url 'main_app:home' %}" class="btn btn-primary mr-2">Home</a>
+          <a href="{% url 'login' %}" class="btn btn-secondary mr-2">Login</a>
+          <a href="###" class="btn btn-secondary">Register</a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .card {
+    animation: slide-up 1s ease;
+  }
+
+  @keyframes slide-up {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* Button hover effect */
+  .btn-primary:hover,
+  .btn-secondary:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Background color animation */
+  body {
+    animation: color-change 10s ease-in-out infinite;
+  }
+
+  @keyframes color-change {
+    0% {
+      background-color: #ffeaa7;
+    }
+    50% {
+      background-color: #fab1a0;
+    }
+    100% {
+      background-color: #ffeaa7;
+    }
+  }
+      body {
+    background-color: rgb(60, 52, 60);
+    }
+</style>
+{% endblock %}

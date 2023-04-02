@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import home
-app_name = 'question_blueprint'
+app_name='main_app'
 
 
 urlpatterns = [
