@@ -3,22 +3,103 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<div class="container my-5 " >
-    <h1>Sign up for a new account</h1>
-    <hr>
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <button type="submit" class="btn btn-sm btn-primary">Sign In</button>
-    </form>
-    <p class="my-2">
-        <a href="###">Create a new account here!</a>
-    </p>
-        <p>
-         
-    </p>
+<div class="container-fluid d-flex align-items-center justify-content-center py-5">
+    <div class="row justify-content-center" style="min-width: 50%;">
+        <div class="col-lg-12">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="text-center mb-0">Sign In</h4>
+                </div>
+                <div class="card-body">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    </form>
+                    <hr>
+                    <div class="text-center">
+                        <p>Or</p>
+                        <a class="btn btn-danger btn-block" href="#######">
+                            <i class="fab fa-google"></i> Sign in with Google
+                        </a>
+                    </div>
+                    <hr>
+                    <p class="text-center mt-3 mb-0">
+                        <a href="#">Create a new account here!</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+    .card {
+        animation: slide-up 1s ease;
+    }
+    
+    @keyframes slide-up {
+        0% {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    
+    .card-header {
+        animation: pulse 3s ease infinite;
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+  /* Background color animation */
+  body {
+    animation: color-change 10s ease-in-out infinite;
+  }
+
+  @keyframes color-change {
+    0% {
+      background-color: #ffeaa7;
+    }
+    50% {
+      background-color: #fab1a0;
+    }
+    100% {
+      background-color: #ffeaa7;
+    }
+  }
+    .btn-primary {
+        background-color: #5cb85c;
+        border-color: #5cb85c;
+    }
+    
+    .btn-primary:hover {
+        background-color: #449d44;
+        border-color: #398439;
+    }
+    
+    .btn-primary:active {
+        background-color: #398439;
+        border-color: #2d6e2d;
+    }
+    
+    .btn-primary:focus {
+        box-shadow: 0 0 0 0.2rem rgba(92, 184, 92, 0.5);
+    }
+
+    
+</style>
 {% endblock %}
-
-
-
