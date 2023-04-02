@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load socialaccount %}
 {% block title %}Login{% endblock %}
 
 {% block content %}
@@ -19,7 +20,7 @@
                     <hr>
                     <div class="text-center">
                         <p>Or</p>
-                        <a class="btn btn-danger btn-block" href="#######">
+                        <a class="btn btn-danger btn-block" href="{% provider_login_url 'google' %}">
                             <i class="fab fa-google"></i> Sign in with Google
                         </a>
                     </div>

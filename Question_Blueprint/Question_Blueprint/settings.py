@@ -50,6 +50,13 @@ INSTALLED_APPS = [
     # tag model
     'taggit',
 
+    # auth with Google
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+
 ]
 
 MIDDLEWARE = [
@@ -138,10 +145,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# later use
-# AUTHENTICATION_BACKENDS = [
-#    'allauth.account.auth_backends.AuthenticationBackend'
-# ]
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = '/'
@@ -149,3 +152,21 @@ LOGOUT_REDIRECT_URL = 'logout'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+]
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+SITE_ID = 3

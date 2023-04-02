@@ -21,11 +21,6 @@ class Question(models.Model):
         pass
 
 
-
-
-
-
-
 """
 class Upvote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_vote')
