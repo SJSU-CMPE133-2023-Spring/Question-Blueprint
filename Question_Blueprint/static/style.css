@@ -1,7 +1,9 @@
 .selector-for-some-widget {
   box-sizing: content-box;
 }
-
+body {
+background: linear-gradient(to bottom, #f7f7f7, #d9e1e8);
+}
 row{
 display: flex;
 justify-content: center;
@@ -36,4 +38,56 @@ button {
     padding: 5px;
     margin: 3px;
   }
+}
+
+.logo {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  font-size: 1.23rem;
+  color: #fff;
+  background: linear-gradient(to right,#4ea170,  #4578ae);
+  border-radius: 20px;
+  padding: 5px 10px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  cursor: pointer;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.logo:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+.logo span {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+.nav-link {
+  display: inline-block;
+  padding: 5px;
+  margin: 0 5px;
+  border-radius: 5px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+  transform: scale(1.5);
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
 }
