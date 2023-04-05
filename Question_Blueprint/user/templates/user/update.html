@@ -1,0 +1,17 @@
+{% extends "base_nav.html" %} {% load crispy_forms_tags %} {% block title%}
+Update {% endblock title%} {% block content %}
+<div class="container">
+  <form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %} {{user_update_form|crispy}} {{profile_update_form|crispy}}
+    <button class="btn btn-primary" type="submit">
+      Update Profile
+    </button>
+  </form>
+  <div style="margin-top: 10px">
+    <button class="btn btn-primary" type="submit">
+      <a href="{% url 'profile_view' user.username%}" style="color: white; text-decoration: none">Go Back</a>
+    </button>
+  </div>
+</div>
+
+{% endblock content %}

@@ -5,7 +5,7 @@ from taggit.managers import TaggableManager
 # Create your models here.
 class Question(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=200, blank=True, null=True)
+    title = models.CharField(max_length=200, blank=False, null=False)
     content = models.TextField(max_length=20000, blank=False, null=False)
     tag = TaggableManager(blank=True)
     upvote_num = models.IntegerField(default=0)
