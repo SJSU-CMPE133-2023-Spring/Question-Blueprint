@@ -1,23 +1,33 @@
 {% extends 'base.html' %}
+
 {% load crispy_forms_tags %}
 {% load socialaccount %}
+
 {% block title %}Login{% endblock %}
 
 {% block content %}
+
+<!-- Login form container -->
 <div class="container-fluid d-flex align-items-center justify-content-center py-5">
     <div class="row justify-content-center" style="min-width: 50%;">
         <div class="col-lg-12">
-            <div class="card shadow-lg">
-                <div class="card-header bg-primary text-white">
+            <!-- Login card -->
+            <div class="card shadow-lg login-card">
+                <!-- Login card header -->
+                <div class="card-header bg-primary text-white login-card-header">
                     <h4 class="text-center mb-0">Sign In</h4>
                 </div>
+                <!-- Login card body -->
                 <div class="card-body">
+                    <!-- Login form with CSRF token and crispy forms template -->
                     <form action="" method="POST">
                         {% csrf_token %}
                         {{ form|crispy }}
+                        <!-- Submit button -->
                         <button type="submit" class="btn btn-primary btn-block">Sign In</button>
                     </form>
                     <hr>
+                    <!-- Login with Google button -->
                     <div class="text-center">
                         <p>Or</p>
                         <a class="btn btn-danger btn-block" href="{% provider_login_url 'google' %}">
@@ -25,6 +35,7 @@
                         </a>
                     </div>
                     <hr>
+                    <!-- Create account link -->
                     <p class="text-center mt-3 mb-0">
                         <a href="#">Create a new account here!</a>
                     </p>
@@ -33,12 +44,22 @@
         </div>
     </div>
 </div>
-
+<!-- Login page CSS styles -->
 <style>
-    .card {
+    .login-card {
+        max-width: 500px;
         animation: slide-up 1s ease;
     }
-    
+
+    .login-card-header {
+        border-bottom: none;
+    }
+
+    .btn-primary:hover,
+    .btn-danger:hover {
+        transform: translateY(-2px);
+    }
+
     @keyframes slide-up {
         0% {
             transform: translateY(100%);
@@ -49,58 +70,5 @@
             opacity: 1;
         }
     }
-    
-    .card-header {
-        animation: pulse 3s ease infinite;
-    }
-    
-    @keyframes pulse {
-        0% {
-            transform: scale(1);
-        }
-        50% {
-            transform: scale(1.1);
-        }
-        100% {
-            transform: scale(1);
-        }
-    }
-
-  /* Background color animation */
-  body {
-    animation: color-change 10s ease-in-out infinite;
-  }
-
-  @keyframes color-change {
-    0% {
-      background-color: #ffeaa7;
-    }
-    50% {
-      background-color: #fab1a0;
-    }
-    100% {
-      background-color: #ffeaa7;
-    }
-  }
-    .btn-primary {
-        background-color: #5cb85c;
-        border-color: #5cb85c;
-    }
-    
-    .btn-primary:hover {
-        background-color: #449d44;
-        border-color: #398439;
-    }
-    
-    .btn-primary:active {
-        background-color: #398439;
-        border-color: #2d6e2d;
-    }
-    
-    .btn-primary:focus {
-        box-shadow: 0 0 0 0.2rem rgba(92, 184, 92, 0.5);
-    }
-
-    
 </style>
 {% endblock %}

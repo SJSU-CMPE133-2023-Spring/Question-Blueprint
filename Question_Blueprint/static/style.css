@@ -37,3 +37,57 @@ button {
     margin: 3px;
   }
 }
+
+
+  .logout-card {
+    animation: slide-up 1s ease;
+  }
+
+  @keyframes slide-up {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* Button hover effect */
+  .btn-primary:hover,
+  .btn-secondary:hover {
+    transform: translateY(-2px);
+  }
+
+
+      .login-card {
+        animation: slide-up 1s ease;
+    }
+    
+    @keyframes slide-up {
+        0% {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    
+    .login-card-header {
+        animation: pulse 3s ease infinite;
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
