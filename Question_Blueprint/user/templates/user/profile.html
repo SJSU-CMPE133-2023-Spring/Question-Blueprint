@@ -23,13 +23,18 @@
             {% endif %}
             <hr>
             <div class="mb-4 pb-2">
-                <h4 class="mb-2">Bio: {{ user1.profile.bio }}</h4>
+                {% if user1.profile.bio %}
+                    <h4 class="mb-2">Bio: {{ user1.profile.bio }}</h4>
+                {% else %}
+                    <p style="color:darkgray" class="mb-2">This person is too lazy to write anything :(</p>
+                {% endif %}
             </div>
             <hr>
             <div class="mb-4 pb-2">
                 <h4 class="mb-2">Email: {{ user1.email }}</h4>
             </div>
 
+            <!-- add link to these -->
             <div class="mb-4 pb-2">
               <button type="button" class="btn btn-outline-primary btn-floating">
                 <i class="fab fa-facebook-f fa-lg"></i>
@@ -38,8 +43,11 @@
                 <i class="fab fa-twitter fa-lg"></i>
               </button>
               <button type="button" class="btn btn-outline-primary btn-floating">
-                <i class="fab fa-skype fa-lg"></i>
+                <i class="fab fa-linkedin fa-lg"></i>
               </button>
+
+            <!--  -->
+
             </div>
             <hr>
             <div class="d-flex justify-content-between text-center mt-5 mb-2">
