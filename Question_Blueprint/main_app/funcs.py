@@ -34,12 +34,69 @@ def similarity_check(question, question_set):
     return sorted(results, key=lambda x: x[1], reverse=True)
 
 
+
+# ===========================================================
+
+""" 
+In addition to "TOXICITY", the Perspective API of Google also provides analysis for the following perspectives:
+
+"SEVERE_TOXICITY": This represents the model's score of the input text's likelihood of being considered severely toxic or inflammatory.
+
+"IDENTITY_ATTACK": This represents the model's score of the input text's likelihood of being an attack on the perceived identity of a group.
+
+"INSULT": This represents the model's score of the input text's likelihood of being considered an insult.
+
+"PROFANITY": This represents the model's score of the input text's likelihood of containing profanity.
+
+"THREAT": This represents the model's score of the input text's likelihood of containing a threat.
+
+"SEXUALLY_EXPLICIT": This represents the model's score of the input text's likelihood of containing sexually explicit material.
+
+"FLIRTATION": This represents the model's score of the input text's likelihood of containing flirtatious material.
+
+Each perspective has its own score, which ranges from 0 to 1, where 0 indicates a low likelihood of the input text containing the perspective and 1 indicates a high likelihood. """
+
+
+API_KEY = 'AIzaSyAAU4tA9zRdw1Mi7aN2YPnQfOWtcJQa3AY'
+from googleapiclient.discovery import build
+import json
+
+
+def perspective(text):
+    client = build(
+        "commentanalyzer",
+        "v1alpha1",
+        developerKey=API_KEY,
+        discoveryServiceUrl="https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1",
+        static_discovery=False,
+    )
+
+    analyze_request = {
+        'comment': { 'text': text },
+        'requestedAttributes': {'TOXICITY': {}, 
+                                'SEVERE_TOXICITY': {},
+                                'IDENTITY_ATTACK': {},
+                                'INSULT': {},
+                                'PROFANITY': {},
+                                'THREAT': {},
+                                'SEXUALLY_EXPLICIT': {},
+                                'FLIRTATION': {},}
+    }
+    fields = ["TOXICITY", "SEVERE_TOXICITY", "IDENTITY_ATTACK", "INSULT", "PROFANITY", "THREAT", "SEXUALLY_EXPLICIT", "FLIRTATION"]
+    res = {}
+
+    response = client.comments().analyze(body=analyze_request).execute()
+    
+    for field in fields:
+        res[field] = response['attributeScores'][field]['summaryScore']['value']
+    return dict(sorted(res.items(), key=lambda item: item[1], reverse=True)) 
+
+
+
+
+
+# ===================================================================
 if __name__ == "__main__":
-
-    def test(question, question_set):
-        res = similarity_check(question, question_set)
-        print(res)
-
 
     question = {"title": "How to learn Python", "content": "I want to learn Python. What resources can you recommend?"}
 
@@ -55,4 +112,12 @@ if __name__ == "__main__":
         {"id": 8, "title": "Python projects for beginners", "content": "Can anyone suggest some simple Python projects for beginners to practice with?"}
     ]
 
-    test(question, question_set)
+    # test for question similarity
+    print(similarity_check(question, question_set))
+
+    # test for perspective API
+    print(perspective('your mother fucker'))
+
+
+
+
