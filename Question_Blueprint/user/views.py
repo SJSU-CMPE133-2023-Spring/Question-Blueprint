@@ -43,32 +43,35 @@ def profile_view(request, username):
 
 
 @login_required
-def update_profile(request):
-    print('sdddddddddddddddddddddddddddddddddddddddddddddddddddddddddd')
-    cur_user_obj = {
-        'username' : request.user.username,
-        'email': request.user.email,
-    }
-    cur_user_profile = {
-        'bio' : request.user.profile.bio,
-        'image': request.user.profile.image.url,
-    }
-    if request.method == "POST":
-        user_update_form = UserInfoUpdateForm(request.POST, instance=request.user)
-        profile_update_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+def update_profile(request, username):
 
-        if user_update_form.is_valid() and profile_update_form.is_valid():
-            user_update_form.save()
-            profile_update_form.save()
-            print(user_update_form)
-            messages.success(request, f'Update successfully')
-            return redirect('profile_view', username=request.user.username)
+    if username == request.user.username:
+
+        cur_user_obj = {
+            'username' : username,
+            'email': request.user.email,
+        }
+        cur_user_profile = {
+            'bio' : request.user.profile.bio,
+            'image': request.user.profile.image.url,
+        }
+        if request.method == "POST":
+            user_update_form = UserInfoUpdateForm(request.POST, instance=request.user)
+            profile_update_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+
+            if user_update_form.is_valid() and profile_update_form.is_valid():
+                user_update_form.save()
+                profile_update_form.save()
+                messages.success(request, f'Update successfully')
+                return redirect('profile_view', username=request.user.username)
+        else:
+            user_update_form = UserInfoUpdateForm(initial=cur_user_obj)
+            profile_update_form = ProfileUpdateForm(initial=cur_user_profile)
+        context = {
+            'user_update_form' : user_update_form,
+            'profile_update_form' : profile_update_form,
+        }
+
+        return render(request, 'user/update.html', context=context)
     else:
-        user_update_form = UserInfoUpdateForm(initial=cur_user_obj)
-        profile_update_form = ProfileUpdateForm(initial=cur_user_profile)
-    context = {
-        'user_update_form' : user_update_form,
-        'profile_update_form' : profile_update_form,
-    }
-
-    return render(request, 'user/update.html', context=context)
+        return render(request, 'user/error.html')
