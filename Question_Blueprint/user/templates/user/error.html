@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Error{% endblock %} {% block content %}
+<body>
+  <div class="container">
+    <h1>Error: Accessibility Not Available</h1>
+    <p>
+      We apologize, but it looks like you are unable to access this website due
+      to a lack of accessibility options.
+    </p>
+    <p>
+      Please contact us if you have any questions or need assistance accessing
+      our content.
+    </p>
+  </div>
+</body>
+<style>
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 50px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  h1 {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+</style>
+{% endblock %}

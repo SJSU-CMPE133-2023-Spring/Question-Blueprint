@@ -1,55 +1,74 @@
-{% extends 'base_nav.html' %}  <!-- Extends a base template named 'base_nav.html', which includes a navigation bar. -->
+{% extends 'base_nav.html' %}
+<!-- Extends a base template named 'base_nav.html', which includes a navigation bar. -->
 
-{% block title %} Profile {% endblock title %}  <!-- Sets the title of the page to "Profile". -->
+{% block title %} Profile {% endblock title %}
+<!-- Sets the title of the page to "Profile". -->
 
-{% block content %}  <!-- Defines the main content of the page. -->
-<section class="vh-100" style="background-color: #eee;">
+{% block content %}
+<!-- Defines the main content of the page. -->
+<section class="vh-100" style="background-color: #eee">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-md-12 col-xl-4">
-
         <!-- Displays the user's profile picture, username, and bio. -->
-        <div class="card" style="border-radius: 15px;">
+        <div class="card" style="border-radius: 15px">
           <div class="card-body text-center">
             <div class="mt-3 mb-4">
-              <img src="{{ user.profile.image.url }}" class="rounded-circle img-fluid" style="width: 100px;" />
+              <img
+                src="{{ user.profile.image.url }}"
+                class="rounded-circle img-fluid"
+                style="width: 100px"
+              />
             </div>
             <h4 class="mb-2">{{ user1.username|title }}</h4>
             {% if user1.username == user.username %}
-              <a href="{% url 'profile_update' %}"><button type="button" class="btn btn-outline-primary">
-                  Update
-                </button></a>
+            <a href="{% url 'profile_update' user.username %}"
+              ><button type="button" class="btn btn-outline-primary">
+                Update
+              </button></a
+            >
             {% endif %}
-            <hr>
+            <hr />
 
             <!-- Displays the user's bio or a message if they haven't written anything. -->
             <div class="mb-4 pb-2">
-                {% if user1.profile.bio %}
-                    <h4 class="mb-2">Bio: {{ user1.profile.bio }}</h4>
-                {% else %}
-                    <p style="color:darkgray" class="mb-2">This person is too lazy to write anything :(</p>
-                {% endif %}
+              {% if user1.profile.bio %}
+              <h4 class="mb-2">Bio: {{ user1.profile.bio }}</h4>
+              {% else %}
+              <p style="color: darkgray" class="mb-2">
+                This person is too lazy to write anything :(
+              </p>
+              {% endif %}
             </div>
-            <hr>
+            <hr />
 
             <!-- Displays the user's email address. -->
             <div class="mb-4 pb-2">
-                <h4 class="mb-2">Email: {{ user1.email }}</h4>
+              <h4 class="mb-2">Email: {{ user1.email }}</h4>
             </div>
 
             <!-- Displays buttons for the user's social media profiles. Links for these buttons need to be added. -->
             <div class="mb-4 pb-2">
-              <button type="button" class="btn btn-outline-primary btn-floating">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-floating"
+              >
                 <i class="fab fa-facebook-f fa-lg"></i>
               </button>
-              <button type="button" class="btn btn-outline-primary btn-floating">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-floating"
+              >
                 <i class="fab fa-twitter fa-lg"></i>
               </button>
-              <button type="button" class="btn btn-outline-primary btn-floating">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-floating"
+              >
                 <i class="fab fa-linkedin fa-lg"></i>
               </button>
             </div>
-            <hr>
+            <hr />
 
             <!-- Displays the number of questions and answers the user has asked and answered. -->
             <div class="d-flex justify-content-between text-center mt-5 mb-2">
@@ -64,7 +83,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
