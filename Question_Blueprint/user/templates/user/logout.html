@@ -1,25 +1,49 @@
-{% extends 'base.html' %}   <!-- Extends the base.html file, which contains the main layout -->
-{% block title %}Logout{% endblock %}   <!-- Sets the title of the page to "Logout" -->
+{% extends 'base.html' %}
+<!-- Extends the base.html file, which contains the main layout -->
+{% block title %}Logout{% endblock %}
+<!-- Sets the title of the page to "Logout" -->
 
-{% block content %}   <!-- Defines the main content of the page -->
-<div class="container-fluid d-flex align-items-center justify-content-center py-5">   <!-- Creates a container to center the content vertically and horizontally -->
-  <div class="row justify-content-center" style="min-width: 50%;"   >   <!-- Creates a row to center the content horizontally and sets the minimum width of the row to 50% of the viewport -->
-    <div class="col mx-auto">   <!-- Creates a column and centers it horizontally -->
-      <div class="card shadow-lg p-4 logout-card">   <!-- Creates a card with shadow and padding, and adds the "logout-card" class for styling -->
-        {% if user.is_authenticated %}   <!-- Checks if the user is authenticated -->
-        <h1 class="text-center mb-4">Goodbye, {{ user.username }}!</h1>   <!-- Displays a farewell message with the user's username -->
-        <p class="text-center">You have successfully logged out!</p>   <!-- Displays a message that the user has logged out successfully -->
-        <div class="text-center">   <!-- Centers the buttons horizontally -->
-          <a href="{% url 'login' %}" class="btn btn-primary mr-2">Login</a>   <!-- Creates a "Login" button with primary styling and margin-right -->
-          <a href="{% url 'register' %}" class="btn btn-secondary">Register</a>   <!-- Creates a "Register" button with secondary styling -->
+{% block content %}
+<!-- Defines the main content of the page -->
+<div
+  class="container-fluid d-flex align-items-center justify-content-center py-5"
+>
+  <!-- Creates a container to center the content vertically and horizontally -->
+  <div class="row justify-content-center" style="min-width: 50%">
+    <!-- Creates a row to center the content horizontally and sets the minimum width of the row to 50% of the viewport -->
+    <div class="col mx-auto">
+      <!-- Creates a column and centers it horizontally -->
+      <div class="card shadow-lg p-4 logout-card">
+        <!-- Creates a card with shadow and padding, and adds the "logout-card" class for styling -->
+        {% if user.is_authenticated %}
+        <!-- Checks if the user is authenticated -->
+        <h1 class="text-center mb-4">Goodbye, {{ user.username }}!</h1>
+        <!-- Displays a farewell message with the user's username -->
+        <p class="text-center">You have successfully logged out!</p>
+        <!-- Displays a message that the user has logged out successfully -->
+        <div class="text-center">
+          <!-- Centers the buttons horizontally -->
+          <a href="{% url 'login' %}" class="btn btn-primary mr-2">Login</a>
+          <!-- Creates a "Login" button with primary styling and margin-right -->
+          <a href="{% url 'register' %}" class="btn btn-secondary">Register</a>
+          <!-- Creates a "Register" button with secondary styling -->
         </div>
-        {% else %}   <!-- If the user is not authenticated -->
-        <h1 class="text-center mb-4">You're not logged in!</h1>   <!-- Displays a message that the user is not logged in -->
-        <p class="text-center">Please log in to continue.</p>   <!-- Displays a message to prompt the user to log in -->
-        <div class="text-center">   <!-- Centers the buttons horizontally -->
-          <a href="{% url 'main_app:home' %}" class="btn btn-primary mr-2">Home</a>   <!-- Creates a "Home" button with primary styling and margin-right -->
-          <a href="{% url 'login' %}" class="btn btn-secondary mr-2">Login</a>   <!-- Creates a "Login" button with secondary styling and margin-right -->
-          <a href="{% url 'register' %}" class="btn btn-secondary">Register</a>   <!-- Creates a "Register" button with secondary styling -->
+        {% else %}
+        <!-- If the user is not authenticated -->
+        <h1 class="text-center mb-4">You're not logged in!</h1>
+        <!-- Displays a message that the user is not logged in -->
+        <p class="text-center">Please log in to continue.</p>
+        <!-- Displays a message to prompt the user to log in -->
+        <div class="text-center">
+          <!-- Centers the buttons horizontally -->
+          <a href="{% url 'main_app:home' %}" class="btn btn-primary mr-2"
+            >Home</a
+          >
+          <!-- Creates a "Home" button with primary styling and margin-right -->
+          <a href="{% url 'login' %}" class="btn btn-secondary mr-2">Login</a>
+          <!-- Creates a "Login" button with secondary styling and margin-right -->
+          <a href="{% url 'register' %}" class="btn btn-secondary">Register</a>
+          <!-- Creates a "Register" button with secondary styling -->
         </div>
         {% endif %}
       </div>
@@ -29,18 +53,23 @@
 
 <style>
   .card {
-    animation: slide-up 1s ease;   /* Adds a slide-up animation to the card with a duration of 1s and easing effect */
+    animation: slide-up 1s ease; /* Adds a slide-up animation to the card with a duration of 1s and easing effect */
   }
 
-  @keyframes slide-up {   /* Defines the keyframes for the slide-up animation */
+  @keyframes slide-up {
+    /* Defines the keyframes for the slide-up animation */
     0% {
-      transform: translateY(100%);   /* Sets the starting position of the card below the viewport */
-      opacity: 0;   /* Sets the opacity to 0, making the card invisible */
+      transform: translateY(
+        100%
+      ); /* Sets the starting position of the card below the viewport */
+      opacity: 0; /* Sets the opacity to 0, making the card invisible */
     }
     100% {
-      transform: translateY(0);   /* Sets the final position of the card at the top of the viewport */
-      opacity: 1;   /* Sets the opacity to 1, making the card visible */
+      transform: translateY(
+        0
+      ); /* Sets the final position of the card at the top of the viewport */
+      opacity: 1; /* Sets the opacity to 1, making the card visible */
     }
   }
-
-  /*
+</style>
+{% endblock %}
