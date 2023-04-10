@@ -25,11 +25,6 @@ class UserInfoUpdateForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
     bio = forms.CharField(required=False)
     image = forms.ImageField(required=False)
-    facebook_link = forms.URLField(required=False)
-    twitter_link = forms.URLField(required=False)
-    linkedin_link = forms.URLField(required=False)
-    
     class Meta:
         model = Profile
-        fields = ['bio', 'image', 'facebook_link', 'twitter_link', 'linkedin_link']
-
+        fields = ['bio', 'image']

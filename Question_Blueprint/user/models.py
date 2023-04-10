@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
 
+# Profile model to store additional user information
 
 class Profile(models.Model):
     # One-to-one relationship with the User model
@@ -10,11 +11,6 @@ class Profile(models.Model):
     # Fields to store user information
     bio = models.CharField(max_length=1000)
     image = models.ImageField(default='default.jpg', upload_to="profile_pic")
-    
-    # Fields to store social media links
-    facebook_link = models.URLField(max_length=20000, blank=True)
-    twitter_link = models.URLField(max_length=20000, blank=True)
-    linkedin_link = models.URLField(max_length=20000, blank=True)
 
     # String representation of the Profile object
     def __str__(self):
@@ -30,4 +26,3 @@ class Profile(models.Model):
             output_size = (800, 800)
             img.thumbnail(output_size)
             img.save(self.image.path)
-
