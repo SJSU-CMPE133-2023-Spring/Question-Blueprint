@@ -30,7 +30,7 @@
 6. Deployment 
 
 # Documentation
-![image](https://user-images.githubusercontent.com/67130044/231318027-b9fd7bc7-e9ce-428c-a010-fa432bce12fa.png)
-![image](https://user-images.githubusercontent.com/67130044/231318059-8a529c04-55cb-4ee4-929b-eb1a4729d0d6.png)
+![UML   Sequence Diagrams1024_4](https://user-images.githubusercontent.com/67130044/231318279-82462275-7cae-4a80-8628-20926ff07fa1.png)
+
 
 
