@@ -31,6 +31,12 @@
 
 # Documentation
 ![UML   Sequence Diagrams1024_4](https://user-images.githubusercontent.com/67130044/231318279-82462275-7cae-4a80-8628-20926ff07fa1.png)
+![UML   Sequence Diagrams1024_6](https://user-images.githubusercontent.com/67130044/231318309-93351d7e-9316-404f-987e-8caae1e51ef3.png)
+![UML   Sequence Diagrams1024_7](https://user-images.githubusercontent.com/67130044/231318323-572ad1d8-f823-4962-9c65-cf02f9439df5.png)
+![UML   Sequence Diagrams1024_8](https://user-images.githubusercontent.com/67130044/231318333-a512d5ec-2650-4417-94cd-d76348feb065.png)
+![UML   Sequence Diagrams1024_9](https://user-images.githubusercontent.com/67130044/231318340-2fb7210a-c518-423c-a1b8-d60763fef824.png)
+![UML   Sequence Diagrams1024_10](https://user-images.githubusercontent.com/67130044/231318353-4c2ec017-6837-4cbe-8537-58506676bbd7.png)
+
 
 
 
