@@ -1,0 +1,10 @@
+{% extends "base_nav.html" %} {% load crispy_forms_tags %} {% block content%}
+<div class="container">
+  <h2>Sure to delete</h2>
+  <form action="" method="POST">
+    {% csrf_token %}
+    <button class="btn btn-outline-danger" type="submit">Confim</button>
+    <a class="btn btn-outline-primary" href="{% url 'question_blueprint:question_detail_view' single_question.id %}">Cancel</a>
+  </form>
+</div>
+{% endblock %}
