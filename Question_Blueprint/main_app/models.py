@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
+from django.utils import timezone
+from django.urls import reverse
+
+
 
 # Create your models here.
 class Question(models.Model):
@@ -9,19 +13,23 @@ class Question(models.Model):
     content = models.TextField(max_length=20000, blank=False, null=False)
     tag = TaggableManager(blank=True)
     upvote_num = models.IntegerField(default=0)
+    created_date = models.DateTimeField(default=timezone.now)
+
 
     def __str__(self):
         return f'Question of {self.user.username}'
     
     #  to get the URL of the object's detail view.
     def get_absolute_url(self):
-        pass
+        return reverse('main_app:question_view')
 
-    def update_vote_num(self):
-        pass
+    def save(self,*args, **kwargs):
+        super().save(*args, **kwargs)
 
+    def update_upvote_num(self):
+        self.upvote_num = self.question_vote.filter(is_upvote=True).count() - self.question_vote.filter(is_upvote=False).count()
+        self.save()
 
-"""
 class Upvote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_vote')
     is_upvote = models.BooleanField(default=True)
@@ -39,6 +47,8 @@ class QuestionUpvote(Upvote):
     def delete(self, *args, **kwargs):
         super().delete(*args, **kwargs)
         self.question.update_upvote_num()
+
+"""
 
 class AnswerUpvote(Upvote):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name='answer_vote')

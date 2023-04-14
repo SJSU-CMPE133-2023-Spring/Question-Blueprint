@@ -1,0 +1,77 @@
+{% extends "base_nav.html" %}{% load crispy_forms_tags %} {% block title %}
+Detail {% endblock %} {% block content %}
+
+<div class="container my-5">
+  <div class="card">
+    <div class="card-body text-center">
+      <h1 class="card-title">Title: {{ single_question.title }}</h1>
+      <hr />
+      <p>Content: {{ single_question.content }}</p>
+
+      <hr />
+      <span
+        >Asked by
+        <a href="{% url 'profile_view' single_question.user.username %}"
+          >{{single_question.user}}</a
+        ></span
+      >
+      <p>On {{single_question.created_date}}</p>
+
+      <div class="button-group">
+        <a href="{% url 'question_blueprint:answer' single_question.id %}"
+          ><button class="btn btn-outline-primary m-2">Answer</button></a
+        >
+        {% if single_question.user == user %}
+        <a
+          href="{% url 'question_blueprint:question_update_view' single_question.id %}"
+          ><button class="btn btn-outline-warning m-2">Edit</button></a
+        >
+        <button class="btn btn-outline-danger m-2">Delete</button>
+        {% endif %}
+        <a href="{% url 'question_blueprint:question_view' %}"
+          ><button class="btn btn-outline-dark m-2">Back</button></a
+        >
+      </div>
+      <hr />
+      <div class="sort-by">
+
+      <form method="GET">
+        <label for="sort">Sort by:</label>
+        <select id="sort" name="sort">
+          <option value="created_date" {% if request.GET.sort == 'created' %}selected{% endif %}>Date</option>
+          <option value="upvote" {% if request.GET.sort == 'upvote' %}selected{% endif %}>Upvotes</option>
+        </select>
+        <button type="submit">Sort</button>
+      </form>
+    </div>
+      <div>
+        {% if not sorted_answers%}
+        <h5>No answer...</h5>
+        {% else %} {% for ans in sorted_answers %}
+        <p>{{ans.content}}</p>
+        <p>{{ans.user.username}}</p>
+        <p>{{ans.upvote}}</p>
+        <p>{{ans.created_date}}</p>
+        <p>{{ans.upvote_num}}</p>
+
+        {% if user.is_authenticated %}
+        <form
+          method="post"
+          action="{% url 'question_blueprint:upvote' ans.id %}"
+        >
+          {% csrf_token %}
+          <input type="hidden" name="pk" value="{{single_question.id}}" />
+          <button type="submit" class="btn btn-outline-secondary">
+            {{ ans.answer_vote.count }}
+          </button>
+        </form>
+        {% else %}
+        <a href="{% url 'login' %}">Log in to upvote</a>
+        {% endif %} {% endfor %} {% endif %}
+      </div>
+
+      <hr />
+    </div>
+  </div>
+</div>
+{% endblock content %}
