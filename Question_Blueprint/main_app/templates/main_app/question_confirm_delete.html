@@ -4,7 +4,7 @@
   <form action="" method="POST">
     {% csrf_token %}
     <button class="btn btn-outline-danger" type="submit">Confim</button>
-    <a class="btn btn-outline-primary" href="{% url 'question_blueprint:question_detail_view' single_question.id %}">Cancel</a>
+    <a class="btn btn-outline-primary" href="{% url 'main_app:question_detail_view' single_question.id %}">Cancel</a>
   </form>
 </div>
 {% endblock %}
