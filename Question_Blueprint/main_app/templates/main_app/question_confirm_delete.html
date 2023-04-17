@@ -1,10 +1,17 @@
-{% extends "base_nav.html" %} {% load crispy_forms_tags %} {% block content%}
+{% extends "base_nav.html" %} 
+{% load crispy_forms_tags %} 
+
+{% block content%}
 <div class="container">
-  <h2>Sure to delete</h2>
-  <form action="" method="POST">
-    {% csrf_token %}
-    <button class="btn btn-outline-danger" type="submit">Confim</button>
-    <a class="btn btn-outline-primary" href="{% url 'question_blueprint:question_detail_view' single_question.id %}">Cancel</a>
-  </form>
+  <div class="row justify-content-center mt-5 mb-5"> <!-- Center the form horizontally -->
+    <div class="col-md-6"> <!-- Define the form's width -->
+      <h2 class="text-center">Sure to delete</h2> <!-- Center the heading text -->
+      <form action="" method="POST">
+        {% csrf_token %}
+        <button class="btn btn-outline-danger btn-block" type="submit">Confim</button> <!-- Make the button full-width -->
+        <a class="btn btn-outline-primary btn-block" href="{% url 'main_app:question_detail_view' single_question.id %}">Nah, I changed my mind</a> <!-- Make the link button full-width -->
+      </form>
+    </div>
+  </div>
 </div>
 {% endblock %}

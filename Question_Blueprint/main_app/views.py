@@ -34,9 +34,9 @@ class QuestionDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        answers = self.object.answer.all()
-        sorted_answers = answers.order_by('-upvote_num')
-        context['sorted_answers'] = sorted_answers
+        # answers = self.object.answer.all()
+        # sorted_answers = answers.order_by('-upvote_num')
+        # context['sorted_answers'] = sorted_answers
         return context
     
 
@@ -59,13 +59,6 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
                     return self.form_invalid(form)  # Call form_invalid() to display the error message
         return super().form_valid(form)
     
-
-
-
-
-
-
-
 
 class QuestionUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView, ):
     model = Question
@@ -93,6 +86,8 @@ class QuestionUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView, ):
             return True
         return False
     
+    def handle_no_permission(self):
+        return render(self.request, 'error.html')
 
 class QuestionDeleteView( UserPassesTestMixin, LoginRequiredMixin, DeleteView):
     model = Question
@@ -104,6 +99,9 @@ class QuestionDeleteView( UserPassesTestMixin, LoginRequiredMixin, DeleteView):
         if self.request.user == ques.user:
             return True
         return False
+    
+    def handle_no_permission(self):
+        return render(self.request, 'error.html')
     
 
 def perspective(input_text, form):

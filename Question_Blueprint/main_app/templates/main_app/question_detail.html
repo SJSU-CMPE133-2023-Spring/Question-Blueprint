@@ -18,36 +18,41 @@ Detail {% endblock %} {% block content %}
       <p>On {{single_question.created_date}}</p>
 
       <div class="button-group">
-        <a href="{% url 'question_blueprint:answer' single_question.id %}"
+        <a href="#"
           ><button class="btn btn-outline-primary m-2">Answer</button></a
         >
         {% if single_question.user == user %}
-        <a
-          href="{% url 'question_blueprint:question_update_view' single_question.id %}"
-          ><button class="btn btn-outline-warning m-2">Edit</button></a
+        <a href="{% url 'main_app:question_update_view' single_question.id %}"
+          ><button class="btn btn-outline-warning m-2">Update</button></a
         >
-        <button class="btn btn-outline-danger m-2">Delete</button>
+        <a href="{% url 'main_app:question_delete_view' single_question.id %}"
+          ><button class="btn btn-outline-danger m-2">Delete</button></a
+        >
         {% endif %}
-        <a href="{% url 'question_blueprint:question_view' %}"
+        <a href="{% url 'main_app:question_view' %}"
           ><button class="btn btn-outline-dark m-2">Back</button></a
         >
       </div>
       <hr />
-      <div class="sort-by">
+
+      <!-- <div>
+        {% if not sorted_answers%}
+        
+        <h5>No answer...</h5>
+        {% else %}
+        <div class="sort-by">
 
       <form method="GET">
         <label for="sort">Sort by:</label>
-        <select id="sort" name="sort">
+        <select class="" id="sort" name="sort">
           <option value="created_date" {% if request.GET.sort == 'created' %}selected{% endif %}>Date</option>
           <option value="upvote" {% if request.GET.sort == 'upvote' %}selected{% endif %}>Upvotes</option>
         </select>
-        <button type="submit">Sort</button>
+        <button class="btn-outline-secondary btn btn-sm" type="submit">Sort</button>
       </form>
     </div>
-      <div>
-        {% if not sorted_answers%}
-        <h5>No answer...</h5>
-        {% else %} {% for ans in sorted_answers %}
+        
+        {% for ans in sorted_answers %}
         <p>{{ans.content}}</p>
         <p>{{ans.user.username}}</p>
         <p>{{ans.upvote}}</p>
@@ -68,7 +73,7 @@ Detail {% endblock %} {% block content %}
         {% else %}
         <a href="{% url 'login' %}">Log in to upvote</a>
         {% endif %} {% endfor %} {% endif %}
-      </div>
+      </div> -->
 
       <hr />
     </div>

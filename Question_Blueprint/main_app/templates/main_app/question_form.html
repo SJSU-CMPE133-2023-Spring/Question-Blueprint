@@ -1,8 +1,8 @@
 {% extends "base_nav.html" %}
 {% load crispy_forms_tags %} 
 {% block content%}
-<div class="container my-5 ">
-<form action="" method="POST" class="fw-bold">
+<div class="container">
+<form  action="" method="POST" class="fw-bold">
     {% csrf_token %}
     {{form|crispy}}
     <button class="btn btn-primary">Post</button>
