@@ -18,17 +18,17 @@ Detail {% endblock %} {% block content %}
       <p>On {{single_question.created_date}}</p>
 
       <div class="button-group">
-        <a href="{% url 'question_blueprint:answer' single_question.id %}"
+        <a href=""
           ><button class="btn btn-outline-primary m-2">Answer</button></a
         >
         {% if single_question.user == user %}
         <a
-          href="{% url 'question_blueprint:question_update_view' single_question.id %}"
+          href=""
           ><button class="btn btn-outline-warning m-2">Edit</button></a
         >
         <button class="btn btn-outline-danger m-2">Delete</button>
         {% endif %}
-        <a href="{% url 'question_blueprint:question_view' %}"
+        <a href=""
           ><button class="btn btn-outline-dark m-2">Back</button></a
         >
       </div>
@@ -44,7 +44,7 @@ Detail {% endblock %} {% block content %}
         <button type="submit">Sort</button>
       </form>
     </div>
-      <div>
+      <!-- <div>
         {% if not sorted_answers%}
         <h5>No answer...</h5>
         {% else %} {% for ans in sorted_answers %}
@@ -68,7 +68,7 @@ Detail {% endblock %} {% block content %}
         {% else %}
         <a href="{% url 'login' %}">Log in to upvote</a>
         {% endif %} {% endfor %} {% endif %}
-      </div>
+      </div> -->
 
       <hr />
     </div>
