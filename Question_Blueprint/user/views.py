@@ -75,6 +75,6 @@ def update_profile(request, username):
         }
         return render(request, 'user/update.html', context=context)
     else:
-        return render(request, 'user/error.html')
+        return render(request, 'error.html')
 
 

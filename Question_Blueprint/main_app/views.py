@@ -86,6 +86,8 @@ class QuestionUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView, ):
             return True
         return False
     
+    def handle_no_permission(self):
+        return render(self.request, 'error.html')
 
 class QuestionDeleteView( UserPassesTestMixin, LoginRequiredMixin, DeleteView):
     model = Question
@@ -97,6 +99,9 @@ class QuestionDeleteView( UserPassesTestMixin, LoginRequiredMixin, DeleteView):
         if self.request.user == ques.user:
             return True
         return False
+    
+    def handle_no_permission(self):
+        return render(self.request, 'error.html')
     
 
 def perspective(input_text, form):
