@@ -1,11 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from .models import Question
+from .models import Question, QuestionUpvote
 from django.contrib import messages
 from googleapiclient.discovery import build
-API_KEY = 'AIzaSyAAU4tA9zRdw1Mi7aN2YPnQfOWtcJQa3AY' # hopefully no one will use this without our consent
+from django.shortcuts import get_object_or_404
+
 
 # Create your views here.
 def home(request):
@@ -104,11 +105,30 @@ class QuestionDeleteView( UserPassesTestMixin, LoginRequiredMixin, DeleteView):
         return render(self.request, 'error.html')
     
 
+# Question Upvote View
+@login_required
+def question_upvote(request, pk):
+    question = get_object_or_404(Question, id=pk)
+
+    if request.method == "POST":
+        upvote = QuestionUpvote.objects.filter(question=question, user=request.user).first()
+
+        if upvote:
+            upvote.delete()
+        else:
+            QuestionUpvote.objects.create(question=question, user=request.user)
+            print(f"Question Upvote success")
+    
+    return redirect('main_app:question_detail_view', pk)
+
+
+
+# function to analyze and classify whether the text is vulgar, toxic,... or valid
 def perspective(input_text, form):
     client = build(
             "commentanalyzer",
             "v1alpha1",
-            developerKey=API_KEY,
+            developerKey='AIzaSyAAU4tA9zRdw1Mi7aN2YPnQfOWtcJQa3AY',
             static_discovery=False
         )
 
@@ -138,7 +158,8 @@ def perspective(input_text, form):
 
         for field in fields:
             res[field] = response['attributeScores'][field]['summaryScore']['value']
-        res = dict(sorted(res.items(), key=lambda item: item[1], reverse=True)) 
+        res = dict(sorted(res.items(), key=lambda item: item[1], reverse=True))
+        print(res) 
         threshold = 0.6
         violation_key = [key for key, value in res.items() if value >= threshold]
         return violation_key
