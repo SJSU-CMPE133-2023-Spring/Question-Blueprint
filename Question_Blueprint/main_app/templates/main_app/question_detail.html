@@ -18,7 +18,7 @@ Detail {% endblock %} {% block content %}
       <p>On {{single_question.created_date}}</p>
 
       <div class="button-group">
-        <a href="#"
+        <a href="{% url 'main_app:answer_create_view' single_question.id %}"
           ><button class="btn btn-outline-primary m-2">Answer</button></a
         >
         {% if single_question.user == user %}

@@ -30,6 +30,17 @@ class Question(models.Model):
         self.upvote_num = self.question_vote.filter(is_upvote=True).count() - self.question_vote.filter(is_upvote=False).count()
         self.save()
 
+
+class Answer(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField(max_length=20000, blank=False, null=False)
+    upvote_num = models.IntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+    
+    
+
 class Upvote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_vote')
     is_upvote = models.BooleanField(default=True)

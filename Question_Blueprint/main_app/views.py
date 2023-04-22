@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from .models import Question
+from .models import Question, Answer
+from .forms import AnswerForm
 from django.contrib import messages
 from googleapiclient.discovery import build
 API_KEY = 'AIzaSyAAU4tA9zRdw1Mi7aN2YPnQfOWtcJQa3AY' # hopefully no one will use this without our consent
@@ -102,6 +103,29 @@ class QuestionDeleteView( UserPassesTestMixin, LoginRequiredMixin, DeleteView):
     
     def handle_no_permission(self):
         return render(self.request, 'error.html')
+    
+class AnswerCreateView(LoginRequiredMixin, CreateView):
+    model = Answer
+    field = 'content'
+    form_class = AnswerForm
+    template_name = 'main_app/question_detail.html'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        field = 'content'
+
+        input_text = str(form.cleaned_data.get(field))
+        if input_text is not None:
+            input_text_encoded = input_text.encode('utf-8')
+
+            violation_key = perspective(input_text_encoded, form)    
+            print(violation_key)
+            if violation_key:
+                messages.error(self.request, f"Your {field} is violating {violation_key}")
+                return self.form_invalid(form)  
+        return super().form_valid(form)
+
+
     
 
 def perspective(input_text, form):
