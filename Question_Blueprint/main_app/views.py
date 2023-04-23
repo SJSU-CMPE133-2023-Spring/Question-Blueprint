@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from .models import Question, Answer
 from .forms import AnswerForm
+from django.urls import reverse_lazy
 from django.contrib import messages
 from googleapiclient.discovery import build
 API_KEY = 'AIzaSyAAU4tA9zRdw1Mi7aN2YPnQfOWtcJQa3AY' # hopefully no one will use this without our consent
@@ -35,9 +36,9 @@ class QuestionDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # answers = self.object.answer.all()
-        # sorted_answers = answers.order_by('-upvote_num')
-        # context['sorted_answers'] = sorted_answers
+        answers = self.object.answer.all()
+        sorted_answers = answers.order_by('-upvote_num')
+        context['sorted_answers'] = sorted_answers
         return context
     
 
@@ -104,11 +105,14 @@ class QuestionDeleteView( UserPassesTestMixin, LoginRequiredMixin, DeleteView):
     def handle_no_permission(self):
         return render(self.request, 'error.html')
     
-class AnswerCreateView(LoginRequiredMixin, CreateView):
+
+class AnswerDetailView(CreateView):
     model = Answer
-    field = 'content'
-    form_class = AnswerForm
+    context_object_name = 'ans'
+    form_clas = AnswerForm
     template_name = 'main_app/question_detail.html'
+    success_url = reverse_lazy('main_app:question_view')
+    
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -124,6 +128,33 @@ class AnswerCreateView(LoginRequiredMixin, CreateView):
                 messages.error(self.request, f"Your {field} is violating {violation_key}")
                 return self.form_invalid(form)  
         return super().form_valid(form)
+    
+    def get_queryset(self):
+        return Answer.objects.order_by('-created_date')
+    
+
+class AnswerAddView(CreateView):
+
+    model = Answer
+    ordering = ["-created_date"]
+    context_object_name = 'single_question'
+    form_class = AnswerForm
+    template_name = 'main_app/answer.html'
+    
+    def get_queryset(self):
+        return Answer.objects.order_by('-created_date')
+
+    def form_valid(self, form):
+        self.success_url = reverse_lazy('main_app:question_detail_view', args=[self.kwargs['pk']])
+        form.instance.question_id = self.kwargs['pk']
+        form.instance.user_id = self.request.user.id
+        inp = form.cleaned_data.get('content')
+
+
+        return super().form_valid(form) 
+
+
+
 
 
     
