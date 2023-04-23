@@ -9,7 +9,7 @@
       <form action="" method="POST">
         {% csrf_token %}
         <button class="btn btn-outline-danger btn-block" type="submit">Confim</button> <!-- Make the button full-width -->
-        <a class="btn btn-outline-primary btn-block" href="{% url 'main_app:question_detail_view' single_question.id %}">Nah, I changed my mind</a> <!-- Make the link button full-width -->
+        <a class="btn btn-outline-primary btn-block" href="{% url 'main_app:question_detail_view' single_question.id %}">Nah, just keep it</a> <!-- Make the link button full-width -->
       </form>
     </div>
   </div>

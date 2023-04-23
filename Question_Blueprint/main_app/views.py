@@ -1,13 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from .models import Question, Answer
+from .models import Question, QuestionUpvote, Answer
 from .forms import AnswerForm
-from django.urls import reverse_lazy
+from django.urls import reverse
 from django.contrib import messages
 from googleapiclient.discovery import build
-API_KEY = 'AIzaSyAAU4tA9zRdw1Mi7aN2YPnQfOWtcJQa3AY' # hopefully no one will use this without our consent
+from django.shortcuts import get_object_or_404
+
 
 # Create your views here.
 def home(request):
@@ -77,7 +78,7 @@ class QuestionUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView, ):
                 violation_key = perspective(input_text_encoded, form)    
                 print(violation_key)
                 if violation_key:
-                    messages.error(self.request, f"Your {part} is violating {violation_key}")
+                    messages.error(self.request, f"Your {part} contains inappropriate language. Detail: {violation_key}")
                     return self.form_invalid(form)  
             return super().form_valid(form)
     
@@ -106,64 +107,94 @@ class QuestionDeleteView( UserPassesTestMixin, LoginRequiredMixin, DeleteView):
         return render(self.request, 'error.html')
     
 
-class AnswerDetailView(CreateView):
-    model = Answer
-    context_object_name = 'ans'
-    form_clas = AnswerForm
-    template_name = 'main_app/question_detail.html'
-    success_url = reverse_lazy('main_app:question_view')
+# Question Upvote View
+@login_required
+def question_upvote(request, pk):
+    question = get_object_or_404(Question, id=pk)
+
+    if request.method == "POST":
+        upvote = QuestionUpvote.objects.filter(question=question, user=request.user).first()
+
+        if upvote:
+            upvote.delete()
+        else:
+            QuestionUpvote.objects.create(question=question, user=request.user)
+            print(f"Question Upvote success")
+    
+    return redirect('main_app:question_detail_view', pk)
+
+
+
+# Answer
+# class AnswerDetailView(CreateView):
+#     model = Answer
+#     context_object_name = 'ans'
+#     form_clas = AnswerForm
+#     template_name = 'main_app/question_detail.html'
+#     success_url = reverse_lazy('main_app:question_view')
     
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        field = 'content'
+#     def form_valid(self, form):
+#         form.instance.user = self.request.user
+#         field = 'content'
 
-        input_text = str(form.cleaned_data.get(field))
-        if input_text is not None:
-            input_text_encoded = input_text.encode('utf-8')
+#         input_text = str(form.cleaned_data.get(field))
 
-            violation_key = perspective(input_text_encoded, form)    
-            print(violation_key)
-            if violation_key:
-                messages.error(self.request, f"Your {field} is violating {violation_key}")
-                return self.form_invalid(form)  
-        return super().form_valid(form)
+#         print(input_text)
+#         if input_text is not None:
+#             input_text_encoded = input_text.encode('utf-8')
+
+#             violation_key = perspective(input_text_encoded, form)    
+#             print(violation_key)
+#             if violation_key:
+#                 messages.error(self.request, f"Your {field} is violating {violation_key}")
+#                 return self.form_invalid(form)  
+#         return super().form_valid(form)
     
-    def get_queryset(self):
-        return Answer.objects.order_by('-created_date')
+#     def get_queryset(self):
+#         return Answer.objects.order_by('-created_date')
     
 
 class AnswerAddView(CreateView):
 
     model = Answer
-    ordering = ["-created_date"]
-    context_object_name = 'single_question'
     form_class = AnswerForm
     template_name = 'main_app/answer.html'
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        single_question = get_object_or_404(Question, id=self.kwargs['pk'])
+        print(single_question)
+        context['single_question'] = single_question
+        return context
     
     def get_queryset(self):
         return Answer.objects.order_by('-created_date')
 
     def form_valid(self, form):
-        self.success_url = reverse_lazy('main_app:question_detail_view', args=[self.kwargs['pk']])
-        form.instance.question_id = self.kwargs['pk']
-        form.instance.user_id = self.request.user.id
-        inp = form.cleaned_data.get('content')
+        form.instance.user = self.request.user
+        field = 'content'
+        input_text = str(form.cleaned_data.get(field))
+        if input_text is not None:
+            input_text_encoded = input_text.encode('utf-8')
 
-
-        return super().form_valid(form) 
-
-
+            violation_key = perspective(input_text_encoded, form)    
+            if violation_key:
+                messages.error(self.request, f"Your {field} is violating {violation_key}. Please adjust your response!")
+                return self.form_invalid(form)  
+        return super().form_valid(form)
+    
 
 
 
     
-
+# function to analyze and classify whether the text is vulgar, toxic,... or valid
 def perspective(input_text, form):
     client = build(
             "commentanalyzer",
             "v1alpha1",
-            developerKey=API_KEY,
+            developerKey='AIzaSyAAU4tA9zRdw1Mi7aN2YPnQfOWtcJQa3AY',
             static_discovery=False
         )
 
@@ -193,7 +224,46 @@ def perspective(input_text, form):
 
         for field in fields:
             res[field] = response['attributeScores'][field]['summaryScore']['value']
-        res = dict(sorted(res.items(), key=lambda item: item[1], reverse=True)) 
+        res = dict(sorted(res.items(), key=lambda item: item[1], reverse=True))
+        print(res) 
         threshold = 0.6
         violation_key = [key for key, value in res.items() if value >= threshold]
         return violation_key
+    
+
+
+
+
+
+
+
+
+
+
+
+
+""" @login_required
+def upvote(request, pk):
+    if request.method == "POST":
+        vote_type = request.POST.get("vote_type")
+        if vote_type == "question":
+            question = get_object_or_404(Question, id=pk)
+            upvote = QuestionUpvote.objects.filter(question=question, user=request.user).first()
+            if upvote:
+                upvote.delete()
+            else:
+                QuestionUpvote.objects.create(question=question, user=request.user)
+                print(f"Question Upvote success")
+            return redirect('main_app:question_detail_view', pk)
+        elif vote_type == "answer":
+            answer = get_object_or_404(Answer, id=pk)
+            upvote = AnswerUpvote.objects.filter(answer=answer, user=request.user).first()
+            if upvote:
+                upvote.delete()
+            else:
+                AnswerUpvote.objects.create(answer=answer, user=request.user)
+                print(f"Answer Upvote success")
+            return redirect('main_app:answer_detail_view', pk)
+    else:
+        # handle GET request
+        pass """

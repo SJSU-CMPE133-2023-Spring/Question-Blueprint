@@ -2,7 +2,22 @@
 Detail {% endblock %} {% block content %}
 
 <div class="container my-5">
+      <!-- Question Upvote  -->
+      
+        <form
+          method="POST"
+          action="{% url 'main_app:question_upvote' single_question.id %}"
+        >
+          {% csrf_token %}
+          <input type="hidden" name="pk" value="{{single_question.id}}" />
+          <button type="submit" class="btn btn-outline-secondary">
+            Upvote This Question: {{ single_question.upvote_num }}
+          </button>
+        </form>
+         
+       <!-- End Question Upvote  --> 
   <div class="card">
+
     <div class="card-body text-center">
       <h1 class="card-title">Title: {{ single_question.title }}</h1>
       <hr />

@@ -35,7 +35,5 @@ def similarity_check(question, question_set):
     # Sort results by descending score and return the sorted list of tuples
     return sorted(results, key=lambda x: x[1], reverse=True)
 
-# ===========================================================
-
 
 
