@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from .models import Question, QuestionUpvote, Answer
 from .forms import AnswerForm
-from django.urls import reverse
+from django.urls import  reverse_lazy
 from django.contrib import messages
 from googleapiclient.discovery import build
 from django.shortcuts import get_object_or_404
@@ -171,17 +171,22 @@ class AnswerAddView(CreateView):
     
     def get_queryset(self):
         return Answer.objects.order_by('-created_date')
+    
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
-        field = 'content'
-        input_text = str(form.cleaned_data.get(field))
+        self.success_url = reverse_lazy('main_app:question_detail_view', args=[self.kwargs['pk']])
+        form.instance.question_id = self.kwargs['pk']
+        form.instance.user_id = self.request.user.id
+        inp = form.cleaned_data.get('content')
+
+        input_text = str(inp)
         if input_text is not None:
             input_text_encoded = input_text.encode('utf-8')
 
             violation_key = perspective(input_text_encoded, form)    
+            print(violation_key)
             if violation_key:
-                messages.error(self.request, f"Your {field} is violating {violation_key}. Please adjust your response!")
+                messages.error(self.request, f"Your content is violating {violation_key}")
                 return self.form_invalid(form)  
         return super().form_valid(form)
     
