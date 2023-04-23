@@ -2,7 +2,13 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+<<<<<<< HEAD
 from .models import Question, QuestionUpvote
+=======
+from .models import Question, Answer
+from .forms import AnswerForm
+from django.urls import reverse_lazy
+>>>>>>> 588a8e00b5bb004190c5478c54d3f7170a01c362
 from django.contrib import messages
 from googleapiclient.discovery import build
 from django.shortcuts import get_object_or_404
@@ -35,9 +41,9 @@ class QuestionDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # answers = self.object.answer.all()
-        # sorted_answers = answers.order_by('-upvote_num')
-        # context['sorted_answers'] = sorted_answers
+        answers = self.object.answer.all()
+        sorted_answers = answers.order_by('-upvote_num')
+        context['sorted_answers'] = sorted_answers
         return context
     
 
@@ -123,6 +129,57 @@ def question_upvote(request, pk):
 
 
 
+# Answer
+class AnswerDetailView(CreateView):
+    model = Answer
+    context_object_name = 'ans'
+    form_clas = AnswerForm
+    template_name = 'main_app/question_detail.html'
+    success_url = reverse_lazy('main_app:question_view')
+    
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        field = 'content'
+
+        input_text = str(form.cleaned_data.get(field))
+        if input_text is not None:
+            input_text_encoded = input_text.encode('utf-8')
+
+            violation_key = perspective(input_text_encoded, form)    
+            print(violation_key)
+            if violation_key:
+                messages.error(self.request, f"Your {field} is violating {violation_key}")
+                return self.form_invalid(form)  
+        return super().form_valid(form)
+    
+    def get_queryset(self):
+        return Answer.objects.order_by('-created_date')
+    
+
+class AnswerAddView(CreateView):
+
+    model = Answer
+    ordering = ["-created_date"]
+    context_object_name = 'single_question'
+    form_class = AnswerForm
+    template_name = 'main_app/answer.html'
+    
+    def get_queryset(self):
+        return Answer.objects.order_by('-created_date')
+
+    def form_valid(self, form):
+        self.success_url = reverse_lazy('main_app:question_detail_view', args=[self.kwargs['pk']])
+        form.instance.question_id = self.kwargs['pk']
+        form.instance.user_id = self.request.user.id
+        inp = form.cleaned_data.get('content')
+
+
+        return super().form_valid(form) 
+
+
+
+    
 # function to analyze and classify whether the text is vulgar, toxic,... or valid
 def perspective(input_text, form):
     client = build(

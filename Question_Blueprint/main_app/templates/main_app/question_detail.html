@@ -33,7 +33,7 @@ Detail {% endblock %} {% block content %}
       <p>On {{single_question.created_date}}</p>
 
       <div class="button-group">
-        <a href="#"
+        <a href="{% url 'main_app:answer_create_view' single_question.id %}"
           ><button class="btn btn-outline-primary m-2">Answer</button></a
         >
         {% if single_question.user == user %}
@@ -50,7 +50,7 @@ Detail {% endblock %} {% block content %}
       </div>
       <hr />
 
-      <!-- <div>
+      <div>
         {% if not sorted_answers%}
         
         <h5>No answer...</h5>
@@ -65,33 +65,35 @@ Detail {% endblock %} {% block content %}
         </select>
         <button class="btn-outline-secondary btn btn-sm" type="submit">Sort</button>
       </form>
-    </div>
-        
-        {% for ans in sorted_answers %}
-        <p>{{ans.content}}</p>
-        <p>{{ans.user.username}}</p>
-        <p>{{ans.upvote}}</p>
-        <p>{{ans.created_date}}</p>
-        <p>{{ans.upvote_num}}</p>
-
-        {% if user.is_authenticated %}
-        <form
-          method="post"
-          action="{% url 'question_blueprint:upvote' ans.id %}"
-        >
-          {% csrf_token %}
-          <input type="hidden" name="pk" value="{{single_question.id}}" />
-          <button type="submit" class="btn btn-outline-secondary">
-            {{ ans.answer_vote.count }}
-          </button>
-        </form>
-        {% else %}
-        <a href="{% url 'login' %}">Log in to upvote</a>
-        {% endif %} {% endfor %} {% endif %}
-      </div> -->
+<div class="card mb-3">
+  {% for ans in sorted_answers %}
+      <div class="card-body">
+        <p class="card-text">{{ ans.content }}</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <small class="text-muted">Posted by: {{ ans.user.username }}</small>
+          <div class="d-flex align-items-center">
+            <span class="mx-2">{{ ans.upvote_num }} upvotes</span>
+          </div>
+        </div>
+      </div>
+  {% endfor %}{% endif %}
+</div>
 
       <hr />
     </div>
   </div>
 </div>
 {% endblock content %}
+
+
+
+        <!-- <form
+          method="post"
+          action="{% url 'main_app:upvote' ans.id %}"
+        >
+          {% csrf_token %}
+          <input type="hidden" name="pk" value="{{single_question.id}}" />
+          <button type="submit" class="btn btn-outline-secondary">
+            {{ ans.answer_vote.count }}
+          </button>
+        </form> -->
