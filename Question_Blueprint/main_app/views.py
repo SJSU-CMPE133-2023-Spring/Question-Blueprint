@@ -8,27 +8,35 @@ from django.urls import  reverse_lazy
 from django.contrib import messages
 from googleapiclient.discovery import build
 from django.shortcuts import get_object_or_404
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
 
 # making a CRUD for question
+
 class QuestionListView(ListView):
     model = Question
-    ordering = ["-created_date"]
+    ordering = ['-created_date']
+    template_name = 'main_app/question_list.html'
 
     def get_context_data(self, **kwargs):
-            context = super().get_context_data(**kwargs)
-            sort_by = self.request.GET.get('sort', '-upvote_num')
-            questions = self.model.objects.all()
-            if sort_by == 'created_date':
-                sorted_questions = questions.order_by('-created_date', '-upvote_num')
-            else:
-                sorted_questions = questions.order_by('-upvote_num','-created_date')
-            context['sorted_questions'] = sorted_questions
-            return context
+        context = super().get_context_data(**kwargs)
+        questions = self.model.objects.all()
+        sort_by = self.request.GET.get('sort', '-upvote_num')
+        if sort_by == 'created_date':
+            sorted_questions = questions.order_by('-created_date', '-upvote_num')
+        else:
+            sorted_questions = questions.order_by('-upvote_num','-created_date')
+        paginator = Paginator(sorted_questions,4)  # 3 questions per page
+        page_number = self.request.GET.get('page', 1)
+        page_obj = paginator.get_page(page_number)
+        context['sorted_questions'] = page_obj
+        return context
+
 
 
 class QuestionDetailView(LoginRequiredMixin, DetailView):
