@@ -1,14 +1,11 @@
-{% extends "base_nav.html" %}{% load crispy_forms_tags %} {% block content%}
+{% extends "base_nav.html" %}
+{% load crispy_forms_tags %}
+{% block content%}
 <h1 class="text-center mb-2">Question List</h1>
 
 <div class="d-flex justify-content-between mx-4">
-
-
   {% if user.is_authenticated %}
-  <a
-    href="{% url 'main_app:question_ask_view' %}"
-    class=" mx-4"
-  >
+  <a href="{% url 'main_app:question_ask_view' %}" class=" mx-4">
     <button class="btn btn-outline-success  mx-4">Ask a question</button>
   </a>
   {% else %}
@@ -17,55 +14,87 @@
   </a>
   {% endif %}
 
-
-        <form method="GET">
-        <label for="sort">Sort by:</label>
-        <select id="sort" name="sort">
-          <option value="created_date" {% if request.GET.sort == 'created' %}selected{% endif %}>Date</option>
-          <option value="upvote" {% if request.GET.sort == 'upvote' %}selected{% endif %}>Upvotes</option>
-        </select>
-        <button class="btn btn-outline-secondary" type="submit">Sort</button>
-      </form>
+  <form method="GET">
+    <label for="sort">Sort by:</label>
+    <select id="sort" name="sort">
+      <option value="created_date" {% if request.GET.sort == 'created' %}selected{% endif %}>Date</option>
+      <option value="upvote" {% if request.GET.sort == 'upvote' %}selected{% endif %}>Upvotes</option>
+    </select>
+    <button class="btn btn-outline-secondary" type="submit">Sort</button>
+  </form>
 </div>
 
-
-{% for question in sorted_questions %}
-<div class="container py-2">
-
+<div id="question-list">
+  {% for question in sorted_questions %}
+  <div class="container py-2">
     <div class="list-group">
-    <div class="list-group-item list-group-item-action">
-      <div class="d-flex justify-content-between">
-      <h5 class="fw-bold">{{question.title}}</h5>
-      <h5 class="fw-bold">#Upvote: {{question.upvote_num}}</h5>
-      </div>
-
-      <div class="d-flex flex-row">
-        <div class="d-flex flex-row flex-wrap">
-          {% for t in question.tag.all %}
-          <div class="p-2 py-0">#{{t}}</div>
-
-          {% endfor %}
+      <div class="list-group-item list-group-item-action">
+        <div class="d-flex justify-content-between">
+          <h5 class="fw-bold">{{question.title}}</h5>
+          <h5 class="fw-bold">#Upvote: {{question.upvote_num}}</h5>
         </div>
-        
+
+        <div class="d-flex flex-row">
+          <div class="d-flex flex-row flex-wrap">
+            {% for t in question.tag.all %}
+            <div class="p-2 py-0">#{{t}}</div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <hr>
+
+        {% if question.content|wordcount < 15 and question.content|length < 100 %}
+        <p class="">{{question.content}}</p>
+        {% else %}
+        <p>{{question.content|truncatechars:40}}</p>
+        {% endif %}
+
+        <a href="{% url 'main_app:question_detail_view' question.id %}">More Detail...</a>
+
+        <hr />
+
+        <span>Asked by <a href="{% url 'profile_view' question.user.username %}">{{question.user}}</a></span>
+        <p>On {{question.created_date}}</p>
       </div>
-      <hr>
-      {% if question.content|wordcount < 15 and question.content|length < 100 %}
-      <p class="">{{question.content}}</p>
-      {% else %}
-      <p>{{question.content|truncatechars:40}}</p>
-      {% endif %}
-      <a href="{% url 'main_app:question_detail_view' question.id %}"
-        >More Detail...</a
-      >
-      <hr />
-      <span
-        >Asked by
-        <a href="{% url 'profile_view' question.user.username %}"
-          >{{question.user}}</a
-        ></span
-      >
-      <p>On {{question.created_date}}</p>
     </div>
   </div>
+  {% endfor %}
 </div>
-{% endfor %} {% endblock %}
+
+{% if sorted_questions.has_other_pages %}
+  <ul class="pagination justify-content-center mt-4">
+    {% if sorted_questions.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ sorted_questions.previous_page_number }}">«</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <span class="page-link">«</span>
+      </li>
+    {% endif %}
+    {% for i in sorted_questions.paginator.page_range %}
+      {% if sorted_questions.number == i %}
+        <li class="page-item active">
+          <span class="page-link">{{ i }} <span class="sr-only">(current)</span></span>
+        </li>
+      {% else %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+    {% if sorted_questions.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ sorted_questions.next_page_number }}">»</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <span class="page-link">»</span>
+      </li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+
+{% endblock %}
