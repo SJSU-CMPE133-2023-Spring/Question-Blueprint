@@ -6,11 +6,12 @@ Detail {% endblock %} {% block content %}
       
         <form
           method="POST"
-          action="{% url 'main_app:question_upvote' single_question.id %}"
+          action="{% url 'main_app:upvote' single_question.id %}"
         >
           {% csrf_token %}
           <input type="hidden" name="pk" value="{{single_question.id}}" />
-          <button type="submit" class="btn btn-outline-secondary">
+          <input type="hidden" name="vote_type" value="question" />
+          <button type="submit" class="btn btn-outline-primary">
             Upvote This Question: {{ single_question.upvote_num }}
           </button>
         </form>
@@ -19,9 +20,9 @@ Detail {% endblock %} {% block content %}
   <div class="card">
 
     <div class="card-body text-center">
-      <h1 class="card-title">Title: {{ single_question.title }}</h1>
+      <h4 class="card-title">Title: {{ single_question.title }}</h4>
       <hr />
-      <p>Content: {{ single_question.content }}</p>
+      <h5>Content: {{ single_question.content }}</h5>
 
       <hr />
       <span
@@ -51,35 +52,60 @@ Detail {% endblock %} {% block content %}
       <hr />
 
       <div>
-        {% if not sorted_answers%}
-        
+    {% if not sorted_answers %}
         <h5>No answer...</h5>
-        {% else %}
-        <div class="sort-by">
-
-      <form method="GET">
-        <label for="sort">Sort by:</label>
-        <select class="" id="sort" name="sort">
-          <option value="created_date" {% if request.GET.sort == 'created' %}selected{% endif %}>Date</option>
-          <option value="upvote" {% if request.GET.sort == 'upvote' %}selected{% endif %}>Upvotes</option>
-        </select>
-        <button class="btn-outline-secondary btn btn-sm" type="submit">Sort</button>
-      </form>
-<div class="card mb-3">
-  {% for ans in sorted_answers %}
-      <div class="card-body">
-        <p class="card-text">{{ ans.content }}</p>
-        <div class="d-flex justify-content-between align-items-center">
-          <small class="text-muted">Posted by: {{ ans.user.username }}</small>
-          <div class="d-flex align-items-center">
-            <span class="mx-2">{{ ans.upvote_num }} upvotes</span>
-          </div>
+    {% else %}
+        <div class="sort-by mb-3">
+            <form method="GET">
+                <div class="form-group row">
+                    <label for="sort" class="col-sm-2 col-form-label">Sort by:</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="sort" name="sort">
+                            <option value="created_date" {% if request.GET.sort == 'created' %}selected{% endif %}>Date</option>
+                            <option value="upvote" {% if request.GET.sort == 'upvote' %}selected{% endif %}>Upvotes</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <button class="btn btn-outline-secondary btn-block" type="submit">Sort</button>
+                    </div>
+                </div>
+            </form>
         </div>
-      </div>
-  {% endfor %}{% endif %}
+
+
+
+<div class="card mb-3">
+    {% for ans in sorted_answers %}
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="card-body">
+                <p class="card-text text-center">{{ ans.content }}</p>
+                <small class="text-muted">Posted by: {{ ans.user.username }}</small>
+            </div>
+            <!-- <form method="post" action="{% url 'main_app:upvote' ans.id %}" class="upvote-form">
+                {% csrf_token %}
+                <input type="hidden" name="pk" value="{{ans.id}}" />
+                <input type="hidden" name="ques_id" value="{{single_question.id}}" />
+                <input type="hidden" name="vote_type" value="answer" />
+                <button type="submit" class="btn btn-outline-primary mx-5">
+                    {{ ans.answer_vote.count }} <br>
+                    Upvotes
+                </button>
+            </form> -->
+        </div>
+    {% endfor %}
 </div>
 
+
+
+    {% endif %}
+</div>
+
+
       <hr />
+      <div >
+        <p class="float-end">Question you may be interested in: <a href="{% url 'main_app:question_detail_view' sim_id %}">{{ sim_quesiton_title }}</a></p>
+
+      </div>
     </div>
   </div>
 </div>
@@ -87,13 +113,3 @@ Detail {% endblock %} {% block content %}
 
 
 
-        <!-- <form
-          method="post"
-          action="{% url 'main_app:upvote' ans.id %}"
-        >
-          {% csrf_token %}
-          <input type="hidden" name="pk" value="{{single_question.id}}" />
-          <button type="submit" class="btn btn-outline-secondary">
-            {{ ans.answer_vote.count }}
-          </button>
-        </form> -->

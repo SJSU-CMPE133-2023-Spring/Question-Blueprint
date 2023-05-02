@@ -91,3 +91,16 @@ button {
             transform: scale(1);
         }
     }
+
+
+
+    .answer-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.answer-text {
+  text-align: center;
+  font-size: 1.2rem;
+}
