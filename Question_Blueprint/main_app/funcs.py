@@ -1,6 +1,6 @@
 # Import necessary modules
 from nltk.tokenize import word_tokenize
-from gensim import corpora, models, similarities
+from gensim import corpora, similarities
 
 # Data Preprocessing
 def preprocess_questions(questions):
