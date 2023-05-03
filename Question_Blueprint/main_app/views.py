@@ -10,6 +10,12 @@ from googleapiclient.discovery import build
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
 from .funcs import preprocess_questions, similarity_check
+
+
+from gtts import gTTS
+from tempfile import TemporaryFile
+
+
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
@@ -56,16 +62,18 @@ class QuestionDetailView(LoginRequiredMixin, DetailView):
         questions = Question.objects.exclude(id=cur_id)
         question_list = preprocess_questions(questions)
 
-        res = similarity_check(cur_question, question_list)
-    
-        print(cur_id)
-        print(res)
+        sim_ques = similarity_check(cur_question, question_list)
+        print(sim_ques)
 
-        sim_id = res[0]
-        sim_question_title = Question.objects.get(id=sim_id).title
+        if sim_ques:
 
-        context['sim_id'] = sim_id
-        context['sim_quesiton_title'] = sim_question_title
+            sim_id = sim_ques[0]
+            sim_question_title = Question.objects.get(id=sim_id).title
+
+            context['sim_id'] = sim_id
+            context['sim_quesiton_title'] = sim_question_title
+
+        context['sim_ques'] = sim_ques
         return context
     
 
@@ -89,7 +97,12 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
                 if violation_key:
                     messages.error(self.request, f"Your {part} is violating {violation_key}")
                     return self.form_invalid(form)  # Call form_invalid() to display the error message
-        return super().form_valid(form)
+        
+        res = super().form_valid(form)
+        question_id = form.instance.id
+        question = get_object_or_404(Question, id=question_id)
+        save_audio_file(question, question.content)
+        return res
     
 
 class QuestionUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView, ):
@@ -103,13 +116,17 @@ class QuestionUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView, ):
             input_text = str(form.cleaned_data.get(part))
             if input_text is not None:
                 input_text_encoded = input_text.encode('utf-8')
-
                 violation_key = perspective(input_text_encoded, form)    
                 print(violation_key)
                 if violation_key:
-                    messages.error(self.request, f"Your {part} contains inappropriate language. Detail: {violation_key}")
-                    return self.form_invalid(form)  
-            return super().form_valid(form)
+                    messages.error(self.request, f"Your {part} is violating {violation_key}")
+                    return self.form_invalid(form)  # Call form_invalid() to display the error message
+        
+        res = super().form_valid(form)
+        question_id = form.instance.id
+        question = get_object_or_404(Question, id=question_id)
+        save_audio_file(question, question.content)
+        return res
     
     # prevent people change others' questions
     def test_func(self):
@@ -262,3 +279,22 @@ def perspective(input_text, form):
         violation_key = [key for key, value in res.items() if value >= threshold]
         return violation_key
 
+# function convert text to speech
+
+
+def save_audio_file(question, text):
+    # Create a gTTS object with the text to convert to audio
+    tts = gTTS(text)
+
+    # Use a TemporaryFile to save the audio as bytes without writing to disk
+    with TemporaryFile() as f:
+        # Save the audio to the TemporaryFile object
+        tts.write_to_fp(f)
+
+        # Set the file pointer to the beginning of the TemporaryFile
+        f.seek(0)
+        
+        file_name = str(question.id) + ".mp3" 
+
+        # Save the audio file to the audio_file field of the Question object
+        question.audio_file.save(file_name, f)

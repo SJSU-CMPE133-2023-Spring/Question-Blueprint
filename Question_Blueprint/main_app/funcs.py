@@ -35,8 +35,14 @@ def similarity_check(question, question_set):
     # Convert scores to list of tuples (index, score)
     results = [(question_set[i]['id'], round(float(score), 4)) for i, score in enumerate(scores)]
     
+    res = None
+
+    print(len(sorted(results, key=lambda x: x[1], reverse=True)))
     # Sort results by descending score and return the sorted list of tuples
-    return sorted(results, key=lambda x: x[1], reverse=True)[0]
+    if len(sorted(results, key=lambda x: x[1], reverse=True)) > 0 :
+        res = sorted(results, key=lambda x: x[1], reverse=True)[0]
+        print(res)
+    return res
 
 
 
