@@ -279,22 +279,14 @@ def perspective(input_text, form):
         violation_key = [key for key, value in res.items() if value >= threshold]
         return violation_key
 
-# function convert text to speech
 
-
+# function convert text to speech by gTTS library
 def save_audio_file(question, text):
-    # Create a gTTS object with the text to convert to audio
     tts = gTTS(text)
-
-    # Use a TemporaryFile to save the audio as bytes without writing to disk
     with TemporaryFile() as f:
-        # Save the audio to the TemporaryFile object
         tts.write_to_fp(f)
 
-        # Set the file pointer to the beginning of the TemporaryFile
         f.seek(0)
         
         file_name = str(question.id) + ".mp3" 
-
-        # Save the audio file to the audio_file field of the Question object
         question.audio_file.save(file_name, f)
