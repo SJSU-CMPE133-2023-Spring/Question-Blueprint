@@ -14,6 +14,7 @@ class Question(models.Model):
     tag = TaggableManager(blank=True)
     upvote_num = models.IntegerField(default=0)
     created_date = models.DateTimeField(default=timezone.now)
+    audio_file = models.FileField(upload_to='audio/', null=True, blank=True)
 
 
     def __str__(self):
