@@ -9,23 +9,14 @@ Detail {% endblock %} {% block content %}
     <div class="card-body text-center">
 
       <h4 class="card-title">Title: {{ single_question.title }}</h4>
-                  <!-- Question Upvote  -->
-      
-        <form class="my-2"
-          method="POST"
-          action="{% url 'main_app:upvote' single_question.id %}"
-        >
-          {% csrf_token %}
-          <input type="hidden" name="pk" value="{{single_question.id}}" />
-          <input type="hidden" name="vote_type" value="question" />
-          <button type="submit" class="btn btn-outline-primary">
-            Upvote: {{ single_question.upvote_num }}
-          </button>
-        </form>
-         
-       <!-- End Question Upvote  --> 
+
       <hr />
       <h5>Content: {{ single_question.content }}</h5>
+      <audio controls>
+        <source src="{{ single_question.audio_file.url }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+
 
       <hr />
       <span
@@ -94,13 +85,14 @@ Detail {% endblock %} {% block content %}
     {% endif %}
 </div>
 
-
+      {% if res %}
       <hr />
       <div >
         <p class="float-end">Questions you may be interested in:
            <a href="{% url 'main_app:question_detail_view' sim_id %}">{{ sim_quesiton_title }}</a></p>
 
       </div>
+      {% endif %}
     </div>
   </div>
 </div>
@@ -108,3 +100,23 @@ Detail {% endblock %} {% block content %}
 
 
 
+
+
+
+
+
+                  <!-- Question Upvote  -->
+      
+        <!-- <form class="my-2"
+          method="POST"
+          action="{% url 'main_app:upvote' single_question.id %}"
+        >
+          {% csrf_token %}
+          <input type="hidden" name="pk" value="{{single_question.id}}" />
+          <input type="hidden" name="vote_type" value="question" />
+          <button type="submit" class="btn btn-outline-primary">
+            Upvote: {{ single_question.upvote_num }}
+          </button>
+        </form> -->
+         
+       <!-- End Question Upvote  --> 
