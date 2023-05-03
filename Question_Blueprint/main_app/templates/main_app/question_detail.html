@@ -84,16 +84,7 @@ Detail {% endblock %} {% block content %}
                 <p class="card-text text-center">{{ ans.content }}</p>
                 <small class="text-muted">Posted by: {{ ans.user.username }}</small>
             </div>
-            <!-- <form method="post" action="{% url 'main_app:upvote' ans.id %}" class="upvote-form">
-                {% csrf_token %}
-                <input type="hidden" name="pk" value="{{ans.id}}" />
-                <input type="hidden" name="ques_id" value="{{single_question.id}}" />
-                <input type="hidden" name="vote_type" value="answer" />
-                <button type="submit" class="btn btn-outline-primary mx-5">
-                    {{ ans.answer_vote.count }} <br>
-                    Upvotes
-                </button>
-            </form> -->
+
         </div>
     {% endfor %}
 </div>
