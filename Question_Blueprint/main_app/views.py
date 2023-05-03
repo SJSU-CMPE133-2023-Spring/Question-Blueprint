@@ -63,6 +63,7 @@ class QuestionDetailView(LoginRequiredMixin, DetailView):
         question_list = preprocess_questions(questions)
 
         sim_ques = similarity_check(cur_question, question_list)
+        print(sim_ques)
 
         if sim_ques:
 
