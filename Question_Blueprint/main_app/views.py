@@ -262,31 +262,3 @@ def perspective(input_text, form):
         violation_key = [key for key, value in res.items() if value >= threshold]
         return violation_key
 
-
-@login_required
-def upvote(request, pk):
-    if request.method == "POST":
-        vote_type = request.POST.get("vote_type")
-        if vote_type == "question":
-            question = get_object_or_404(Question, id=pk)
-            upvote = QuestionUpvote.objects.filter(question=question, user=request.user).first()
-            if upvote:
-                upvote.delete()
-            else:
-                QuestionUpvote.objects.create(question=question, user=request.user)
-                print(f"Question Upvote success")
-            return redirect('main_app:question_detail_view', pk)
-        elif vote_type == "answer":
-            ques_id = request.POST.get('ques_id')
-            answer = get_object_or_404(Answer, id=pk)
-            upvote = AnswerUpvote.objects.filter(answer=answer, user=request.user).first()
-            if upvote:
-                upvote.delete()
-            else:
-                AnswerUpvote.objects.create(answer=answer, user=request.user)
-               
-                print(f"Answer Upvote success")
-            return redirect('main_app:question_detail_view', ques_id)
-    else:
-        # handle GET request
-        pass 
