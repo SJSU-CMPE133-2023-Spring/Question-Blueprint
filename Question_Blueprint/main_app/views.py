@@ -2,16 +2,14 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from .models import Question, QuestionUpvote, Answer
+from .models import Question, QuestionUpvote, Answer, AnswerUpvote
 from .forms import AnswerForm
 from django.urls import  reverse_lazy
 from django.contrib import messages
 from googleapiclient.discovery import build
 from django.shortcuts import get_object_or_404
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.template.loader import render_to_string
-from django.http import JsonResponse
-
+from django.core.paginator import Paginator
+from .funcs import preprocess_questions, similarity_check
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
@@ -39,6 +37,9 @@ class QuestionListView(ListView):
 
 
 
+
+
+# TO-DO answer sort will be going into here
 class QuestionDetailView(LoginRequiredMixin, DetailView):
     model = Question
     context_object_name = 'single_question'
@@ -48,8 +49,28 @@ class QuestionDetailView(LoginRequiredMixin, DetailView):
         answers = self.object.answer.all()
         sorted_answers = answers.order_by('-upvote_num')
         context['sorted_answers'] = sorted_answers
+
+        cur_id = kwargs.get('object').id
+        cur_question = Question.objects.get(id=cur_id)
+
+        questions = Question.objects.exclude(id=cur_id)
+        question_list = preprocess_questions(questions)
+
+        res = similarity_check(cur_question, question_list)
+    
+        print(cur_id)
+        print(res)
+
+        sim_id = res[0]
+        sim_question_title = Question.objects.get(id=sim_id).title
+
+        context['sim_id'] = sim_id
+        context['sim_quesiton_title'] = sim_question_title
         return context
     
+
+
+
 
 class QuestionCreateView(LoginRequiredMixin, CreateView):
     model = Question
@@ -199,8 +220,6 @@ class AnswerAddView(CreateView):
         return super().form_valid(form)
     
 
-
-
     
 # function to analyze and classify whether the text is vulgar, toxic,... or valid
 def perspective(input_text, form):
@@ -242,20 +261,9 @@ def perspective(input_text, form):
         threshold = 0.6
         violation_key = [key for key, value in res.items() if value >= threshold]
         return violation_key
-    
 
 
-
-
-
-
-
-
-
-
-
-
-""" @login_required
+@login_required
 def upvote(request, pk):
     if request.method == "POST":
         vote_type = request.POST.get("vote_type")
@@ -269,14 +277,16 @@ def upvote(request, pk):
                 print(f"Question Upvote success")
             return redirect('main_app:question_detail_view', pk)
         elif vote_type == "answer":
+            ques_id = request.POST.get('ques_id')
             answer = get_object_or_404(Answer, id=pk)
             upvote = AnswerUpvote.objects.filter(answer=answer, user=request.user).first()
             if upvote:
                 upvote.delete()
             else:
                 AnswerUpvote.objects.create(answer=answer, user=request.user)
+               
                 print(f"Answer Upvote success")
-            return redirect('main_app:answer_detail_view', pk)
+            return redirect('main_app:question_detail_view', ques_id)
     else:
         # handle GET request
-        pass """
+        pass 
