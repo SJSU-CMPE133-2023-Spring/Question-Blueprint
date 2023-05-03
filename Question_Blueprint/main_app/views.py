@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from .models import Question, QuestionUpvote, Answer, AnswerUpvote
 from .forms import AnswerForm
-from django.urls import  reverse_lazy
+from django.urls import  reverse_lazy, reverse
 from django.contrib import messages
 from googleapiclient.discovery import build
 from django.shortcuts import get_object_or_404
@@ -85,6 +85,7 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
     context_object_name = 'single_question'
     fields = ['title', 'content', 'tag']
 
+
     def form_valid(self, form):
         form.instance.user = self.request.user
         fields = ['title', 'content', 'tag']
@@ -103,6 +104,10 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
         question = get_object_or_404(Question, id=question_id)
         save_audio_file(question, question.content)
         return res
+
+    def get_success_url(self):
+        question_id = self.object.id  # Get the ID of the question that was just created
+        return reverse('main_app:question_detail_view', kwargs={'pk': question_id})
     
 
 class QuestionUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView, ):
@@ -137,6 +142,10 @@ class QuestionUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView, ):
     
     def handle_no_permission(self):
         return render(self.request, 'error.html')
+
+    def get_success_url(self):
+        question_id = self.object.id  # Get the ID of the question that was just created
+        return reverse('main_app:question_detail_view', kwargs={'pk': question_id})
 
 class QuestionDeleteView( UserPassesTestMixin, LoginRequiredMixin, DeleteView):
     model = Question
