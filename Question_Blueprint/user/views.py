@@ -42,5 +42,38 @@ def profile_view(request, username):
     return render(request, 'user/profile.html', context=context)
 
 
-
+@login_required
+def update_profile(request, username):
+    if username == request.user.username:
+        cur_user_obj = {
+            'username': username,
+            'email': request.user.email,
+        }
+        cur_user_profile = {
+            'bio': request.user.profile.bio,
+            'image': request.user.profile.image.url,
+            'facebook_link': request.user.profile.facebook_link,
+            'twitter_link': request.user.profile.twitter_link,
+            'linkedin_link': request.user.profile.linkedin_link,
+        }
+        if request.method == "POST":
+            user_update_form = UserInfoUpdateForm(request.POST, instance=request.user)
+            profile_update_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+            if user_update_form.is_valid() and profile_update_form.is_valid():
+                user_update_form.save()
+                profile = profile_update_form.save(commit=False)
+                profile.user = request.user
+                profile.save()
+                messages.success(request, f'Profile updated successfully')
+                return redirect('profile_view', username=request.user.username)
+        else:
+            user_update_form = UserInfoUpdateForm(initial=cur_user_obj)
+            profile_update_form = ProfileUpdateForm(initial=cur_user_profile)
+        context = {
+            'user_update_form': user_update_form,
+            'profile_update_form': profile_update_form,
+        }
+        return render(request, 'user/update.html', context=context)
+    else:
+        return render(request, 'error.html')
 
