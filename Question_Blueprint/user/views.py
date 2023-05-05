@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from main_app.models import Question
+from main_app.models import Question, Answer
 
 # Create your views here.
 def login(request):
@@ -35,9 +35,11 @@ def register(request):
 def profile_view(request, username):
     user1 = User.objects.get(username=username)
     question_count = Question.objects.filter(user=user1).count()
+    ans_count = Answer.objects.filter(user=user1).count()
     context = {
         'user1' : user1,
         'question_count': question_count,
+        'ans_count': ans_count,
     }
     return render(request, 'user/profile.html', context=context)
 
