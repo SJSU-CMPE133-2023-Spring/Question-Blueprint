@@ -233,16 +233,19 @@ class AnswerAddView(CreateView):
         form.instance.question_id = self.kwargs['pk']
         form.instance.user_id = self.request.user.id
         inp = form.cleaned_data.get('content')
-
-        input_text = str(inp)
-        if input_text is not None:
-            input_text_encoded = input_text.encode('utf-8')
-
-            violation_key = perspective(input_text_encoded, form)    
-            print(violation_key)
-            if violation_key:
-                messages.error(self.request, f"Your content is violating {violation_key}")
-                return self.form_invalid(form)  
+        
+        try:
+            input_text = str(inp)
+            if input_text is not None and contains_alphabet(input_text):
+                input_text_encoded = input_text.encode('utf-8')
+                violation_key = perspective(input_text_encoded, form)    
+                print(violation_key)
+        except:
+            violation_key = None
+                
+        if violation_key:
+            messages.error(self.request, f"Your content is violating {violation_key}")
+            return self.form_invalid(form)  
         return super().form_valid(form)
     
 
@@ -255,42 +258,47 @@ def perspective(input_text, form):
             developerKey='AIzaSyAAU4tA9zRdw1Mi7aN2YPnQfOWtcJQa3AY',
             static_discovery=False
         )
+    
+    try:
+        if input_text is not None:
 
-    if input_text is not None:
+            analyze_request = {
+                'comment': {
+                    'type': 'PLAIN_TEXT',
+                    'text': input_text.decode('utf-8')
+                },
+                'requestedAttributes': {'TOXICITY': {}, 
+                                        'SEVERE_TOXICITY': {},
+                                        'IDENTITY_ATTACK': {},
+                                        'INSULT': {},
+                                        'PROFANITY': {},
+                                        'THREAT': {},
+                                        'SEXUALLY_EXPLICIT': {},
+                                        },
+                'languages': ['en'],
 
-        analyze_request = {
-            'comment': {
-                'type': 'PLAIN_TEXT',
-                'text': input_text.decode('utf-8')
-            },
-            'requestedAttributes': {'TOXICITY': {}, 
-                                    'SEVERE_TOXICITY': {},
-                                    'IDENTITY_ATTACK': {},
-                                    'INSULT': {},
-                                    'PROFANITY': {},
-                                    'THREAT': {},
-                                    'SEXUALLY_EXPLICIT': {},
-                                    },
-            'languages': ['en'],
+            }
 
-        }
+            fields = ["TOXICITY", "SEVERE_TOXICITY", "IDENTITY_ATTACK", "INSULT", "PROFANITY", "THREAT", "SEXUALLY_EXPLICIT"]
+            res = {}
 
-        fields = ["TOXICITY", "SEVERE_TOXICITY", "IDENTITY_ATTACK", "INSULT", "PROFANITY", "THREAT", "SEXUALLY_EXPLICIT"]
-        res = {}
+            response = client.comments().analyze(body=analyze_request).execute()
 
-        response = client.comments().analyze(body=analyze_request).execute()
-
-        for field in fields:
-            res[field] = response['attributeScores'][field]['summaryScore']['value']
-        res = dict(sorted(res.items(), key=lambda item: item[1], reverse=True))
-        print(res) 
-        threshold = 0.6
-        violation_key = [key for key, value in res.items() if value >= threshold]
-        return violation_key
-
+            for field in fields:
+                res[field] = response['attributeScores'][field]['summaryScore']['value']
+            res = dict(sorted(res.items(), key=lambda item: item[1], reverse=True))
+            print(res) 
+            threshold = 0.6
+            violation_key = [key for key, value in res.items() if value >= threshold]
+            return violation_key
+    except:
+        return None
 
 # function convert text to speech by gTTS library
 def save_audio_file(question, text):
+    if not contains_alphabet(text):
+        text = "None"
+        
     tts = gTTS(text)
     with TemporaryFile() as f:
         tts.write_to_fp(f)
@@ -299,3 +307,10 @@ def save_audio_file(question, text):
         
         file_name = str(question.id) + ".mp3" 
         question.audio_file.save(file_name, f)
+
+
+def contains_alphabet(input_string):
+    for char in input_string:
+        if char.isalpha():
+            return True
+    return False
