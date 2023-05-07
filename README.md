@@ -1,34 +1,162 @@
 # Question-Blueprint
 [![asciicast](https://asciinema.org/a/GOtFjxHGSPVDe8pyki78WxVd6.svg)](https://asciinema.org/a/GOtFjxHGSPVDe8pyki78WxVd6)
-1. Overview
-  - Problem Statement
-  - Target Audience
-  - Key Features
-  - Technology Stack
-2. Clone and setup
-    1. Clone the project's repository
-        Run ``git clone git@github.com:SJSU-CMPE133-2023-Spring/Question-Blueprint.git``
-    2. Set up a virtual environment
-        1. Install "virtualenv" library
-            Run ``pip install virtualenv``
-        2. Create a virtual environment
-            ``virtualenv <env_name>`` (replace <env_name> with the name you'd like to give to your virtual environment)
-        3. Activate the virtual environment by running the following command:
-        
-               ``<env_name>\Scripts\activate`` for Window
+# Team 1 -  Question Blueprint
 
-                ``source <env_name>/bin/activate`` for Unix or Linux
-        4. Install dependencies 
-            ``pip install -r requirements.txt``
-3. Usage
-    1. Post a question
-    2. Respond to a question
-    3. Search a question
-    4. ...
-4. [Database Schema](https://user-images.githubusercontent.com/67533883/223827059-2f8bccaa-8d35-4a56-9344-df8c01d76460.png)
+Question Blueprint is a web application where user can ask, answers question and also have some interactions with them. 
 
-5. API Documentations
-6. Deployment 
+## Table of Contents
+
+- [Question Blueprint](#question-blueprint)
+  - [Table of Contents](#table-of-contents)
+  - [About the Project](#about-the-project)
+    - [Built With](#built-with)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+  - [Usage](#usage)
+  - [Roadmap](#roadmap)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Contact](#contact)
+  - [Acknowledgements](#acknowledgements)
+
+## About the Project
+
+- Question Blueprint is a web-based application that enables users to post questions, answers, and upvote content they find helpful. The app provides a platform for users to seek and share knowledge, while fostering a community that promotes learning and collaboration.
+
+- This app solves the problem of users struggling to find accurate and relevant answers to their questions on various topics. By providing a platform for users to ask questions and receive answers from a community of experts and enthusiasts, the app helps users save time and effort in finding the information they need.
+
+- Question Blueprint is designed for anyone seeking knowledge on various topics, whether it's a student looking for help with homework, a professional seeking advice on a specific topic, or someone simply curious about a subject. It is also suitable for individuals who are knowledgeable in a particular area and want to share their expertise with others.
+
+
+
+### Built With
+
+  - [Django](https://www.djangoproject.com/)
+  - [Python](https://www.python.org/)
+  - [HTML5](https://html.spec.whatwg.org/)
+  - [CSS](https://www.w3.org/Style/CSS/)
+  - [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+  - [sqlite](https://www.sqlite.org/index.html)
+
+  Some other libraries/technologies:
+  - [gensim](https://pypi.org/project/gensim/): Python library for topic modeling and document similarity analysis
+  - [gTTS](https://pypi.org/project/gTTS/): Google Text-to-Speech library for Python, allowing you to easily generate speech from text in multiple languages.
+  - [Google Authentication](https://developers.google.com/identity): A service provided by Google that allows users to authenticate their identities and access various Google services and APIs securely.
+  - [Perspective API](https://www.perspectiveapi.com/): An API provided by Jigsaw, a subsidiary of Google, that uses machine learning models to analyze the content of text and provide feedback on its perceived level of toxicity, aggression, and other traits. The Perspective API can be used to moderate online content and improve online conversations.
+
+
+
+## Getting Started
+
+### Prerequisites
+
+List any dependencies or prerequisites required to run the project. Be sure to include version numbers if applicable.
+
+- Python version [3.9](https://www.python.org/downloads/release/python-390/) or higher, but lower than [3.11](https://www.python.org/downloads/release/python-311/)
+
+### Installation
+
+1. Clone the repo
+
+  ```sh
+   git clone git@github.com:SJSU-CMPE133-2023-Spring/Question-Blueprint.git
+  ```
+  OR
+  ``` sh
+   git clone https://github.com/SJSU-CMPE133-2023-Spring/Question-Blueprint.git
+  ```
+
+2. (Optional) Create a virtual environment
+
+  ```sh
+    pip install virtualenv
+    virtualenv venv
+  ```
+
+  ``` sh
+    source venv/Scripts/activate (for Mac & Linux)
+  ```
+
+    
+
+  ``` sh
+  or
+    venv\Scripts\activate (for Window)
+  ```
+
+3. Install dependencies
+
+  Navigate to the folder that contains requirements.txt:
+
+  ```sh
+    cd Question_Blueprint/Question_Blueprint/
+  ```
+  
+  Install the dependencies:
+
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+4. Run the application:
+  > **Note:** Make sure you are in the folder contains the file called "manage.py"
+
+  ```sh
+    python manage.py runserver
+  ```
+
+### Usage
+
+  App's Features:
+  - Login/Logout/Register
+  - User profile
+  - Customize user profile
+  - Create questions/answers
+  - Update and Delete questions
+  - Vote for questions/answers
+  - Search questions
+  - Sort questions/answers by created date or #vote
+
+  Limitations:
+   - Speed: Depending on the size and complexity of the project, there may be limitations in terms of how quickly the application can process requests or perform certain tasks. This could be due to factors such as limited processing power, network latency, or the volume of data being processed.
+
+   - API usage: If the project relies on external APIs, there may be limitations in terms of how often requests can be made or how much data can be processed per request. Some APIs may also require authentication or payment to access, which can further impact the project's functionality.
+
+### Roadmap
+
+ 1. Implement a user authentication system
+ 2. Google authentication
+ 3. Creating UI for user 
+ 4. User's profile
+ 5. Create, read, update and delete for question
+ 6. Answer feature
+ 7. Vote feature
+ 8. Search feature
+ 9. Question recommendation feature
+ 10. Text to speech feature
+
+### Contributing
+
+  Team 1 Members:
+  - Hunter Adam
+  - Tan Dao
+  - Vivekanand Koya
+  - Yohannes Habtemariam
+  - Sahiti Hibane
+
+### License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+<!-- ### Contact
+
+Here you can provide information on how to contact you or the project team. This can include email addresses, social media handles, or a link to a website.
+
+### Acknowledgements
+
+Here you can give credit to any individuals or organizations that have contributed to the project or provided support. -->
+
 
 # Documentation
 ![UML   Sequence Diagrams1024_4](https://user-images.githubusercontent.com/67130044/231318279-82462275-7cae-4a80-8628-20926ff07fa1.png)
