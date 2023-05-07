@@ -96,7 +96,7 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
                 violation_key = perspective(input_text_encoded, form)    
                 print(violation_key)
                 if violation_key:
-                    messages.error(self.request, f"Your {part} is violating {violation_key}")
+                    messages.error(self.request, f"Your {part} is violating {violation_key}. Please adjust your {part} to continue!")
                     return self.form_invalid(form)  # Call form_invalid() to display the error message
         
         res = super().form_valid(form)
@@ -124,7 +124,7 @@ class QuestionUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView, ):
                 violation_key = perspective(input_text_encoded, form)    
                 print(violation_key)
                 if violation_key:
-                    messages.error(self.request, f"Your {part} is violating {violation_key}")
+                    messages.error(self.request, f"Your {part} is violating {violation_key}. Please adjust your {part} to continue!")
                     return self.form_invalid(form)  # Call form_invalid() to display the error message
         
         res = super().form_valid(form)
@@ -244,7 +244,7 @@ class AnswerAddView(CreateView):
             violation_key = None
                 
         if violation_key:
-            messages.error(self.request, f"Your content is violating {violation_key}")
+            messages.error(self.request, f"Your content is violating {violation_key}. Please adjust your answer to continue!")
             return self.form_invalid(form)  
         return super().form_valid(form)
     

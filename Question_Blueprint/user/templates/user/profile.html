@@ -49,24 +49,28 @@
 
             <!-- Displays buttons for the user's social media profiles. Links for these buttons need to be added. -->
             <div class="mb-4 pb-2">
-              <button
+              <a href="{{ user1.profile.facebook_link }}">
+                <button
                 type="button"
                 class="btn btn-outline-primary btn-floating"
               >
                 <i class="fab fa-facebook-f fa-lg"></i>
               </button>
-              <button
+              </a>
+              <a href="{{ user1.profile.twitter_link }}">
+                <button
                 type="button"
                 class="btn btn-outline-primary btn-floating"
               >
                 <i class="fab fa-twitter fa-lg"></i>
               </button>
-              <button
+              </a>
+              <a href="{{ user1.profile.linkedin_link }}"><button
                 type="button"
                 class="btn btn-outline-primary btn-floating"
               >
                 <i class="fab fa-linkedin fa-lg"></i>
-              </button>
+              </button></a>
             </div>
             <hr />
 
