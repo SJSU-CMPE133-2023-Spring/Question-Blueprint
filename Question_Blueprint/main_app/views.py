@@ -53,7 +53,16 @@ class QuestionDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         answers = self.object.answer.all()
-        sorted_answers = answers.order_by('-upvote_num')
+
+
+
+
+        sort_by = self.request.GET.get('sort', '-upvote_num')
+        if sort_by == 'created_date':
+            sorted_answers = answers.order_by('-created_date', '-upvote_num')
+        else:
+            sorted_answers = answers.order_by('-upvote_num','-created_date')
+
         context['sorted_answers'] = sorted_answers
 
         cur_id = kwargs.get('object').id
