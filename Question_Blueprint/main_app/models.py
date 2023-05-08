@@ -36,7 +36,7 @@ class Question(models.Model):
 class Answer(models.Model):
     question = models.ForeignKey(Question, related_name="answer", on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField(max_length=10000)
+    content = models.TextField(max_length=200)
     created_date = models.DateTimeField(default=timezone.now)
     upvote_num = models.IntegerField(default=0)
 

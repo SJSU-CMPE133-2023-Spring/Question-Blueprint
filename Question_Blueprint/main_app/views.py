@@ -226,15 +226,14 @@ class AnswerAddView(CreateView):
         form.instance.question_id = self.kwargs['pk']
         form.instance.user_id = self.request.user.id
         inp = form.cleaned_data.get('content')
-        
-        try:
-            input_text = str(inp)
-            if input_text is not None and contains_alphabet(input_text):
-                input_text_encoded = input_text.encode('utf-8')
-                violation_key = perspective(input_text_encoded, form)    
-                print(violation_key)
-        except:
-            violation_key = None
+        violation_key = None
+
+        input_text = str(inp)
+        if input_text is not None and contains_alphabet(input_text):
+            input_text_encoded = input_text.encode('utf-8')
+            violation_key = perspective(input_text_encoded, form)    
+            print(violation_key)
+
                 
         if violation_key:
             messages.error(self.request, f"Your content is violating {violation_key}. Please adjust your answer to continue!")
