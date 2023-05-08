@@ -48,7 +48,7 @@ class UserTest(TestCase):
         response = self.client.get(reverse('profile_view', args=[self.user.username]))
         self.assertRedirects(response, '/login/?next=/profile/{}/'.format(self.user.username))
 
-    def test_update_profile(self):
+    def test_update_profile_view(self):
         self.client.login(username='testuser', password='Test12345')
         response = self.client.get(reverse('profile_update', args=[self.user.username]))
         self.assertEqual(response.status_code, 200)
@@ -67,5 +67,33 @@ class UserTest(TestCase):
         self.assertEqual(user_obj.email, 'testuser_updated@test.com')
         self.assertEqual(user_obj.profile.bio, 'This is a test bio')
 
+    
+    # Write tests to test website performance and security with modern javascript enabled browsers
+    def test_profile_view_with_js(self):
+        self.client.login(username='testuser', password='Test12345')
+        response = self.client.get(reverse('profile_view', args=[self.user.username]), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'user/profile.html')
+    # Write tests to test website performance and security with modern javascript disabled browsers
+    def test_profile_view_without_js(self):
+        self.client.login(username='testuser', password='Test12345')
+        response = self.client.get(reverse('profile_view', args=[self.user.username]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'user/profile.html')
+ # Write tests to test website seo performance
+    def test_profile_view_with_seo(self):
+        self.client.login(username='testuser', password='Test12345')
+        response = self.client.get(reverse('profile_view', args=[self.user.username]), HTTP_USER_AGENT='Googlebot')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'user/profile.html')
+       
+
+
+
+
     def tearDown(self):
         self.user.delete()
+
+
+
+    
