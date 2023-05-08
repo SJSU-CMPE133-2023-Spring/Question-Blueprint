@@ -75,7 +75,7 @@ List any dependencies or prerequisites required to run the project. Be sure to i
   ```
 
   ``` sh
-    source venv/Scripts/activate (for Mac & Linux)
+    source venv/bin/activate (for Mac & Linux)
   ```
 
     
