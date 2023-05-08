@@ -10,6 +10,7 @@ from googleapiclient.discovery import build
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
 from .funcs import preprocess_questions, similarity_check
+from django.db.models import Q, Count
 
 
 from gtts import gTTS
@@ -334,3 +335,15 @@ def upvote(request, pk):
                
                 print(f"Answer Upvote success")
         return redirect('main_app:question_detail_view', pk)
+    
+
+
+
+
+# Search
+
+def search(request):
+    query = request.GET.get('q')
+    print(query)
+    results = Question.objects.filter(Q(title__icontains=query) | Q(content__icontains=query))
+    return render(request, 'main_app/search.html', {'results': results})

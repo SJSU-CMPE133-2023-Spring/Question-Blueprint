@@ -22,7 +22,7 @@ class Question(models.Model):
     
     #  to get the URL of the object's detail view.
     def get_absolute_url(self):
-        return reverse('main_app:question_view')
+        return reverse('main_app:question_detail_view', kwargs={'pk':self.pk})
 
     def save(self,*args, **kwargs):
         super().save(*args, **kwargs)

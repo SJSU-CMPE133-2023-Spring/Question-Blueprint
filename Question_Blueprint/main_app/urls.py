@@ -13,5 +13,6 @@ urlpatterns = [
     path('question/<int:pk>/upvote', views.upvote, name='upvote'),
 
     path('question/<int:pk>/answer/', views.AnswerAddView.as_view(), name='answer_create_view'),
+    path('search/', views.search, name='search'),
 
 ]
