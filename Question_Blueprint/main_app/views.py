@@ -341,7 +341,6 @@ def upvote(request, pk):
 
 
 # Search
-
 def search(request):
     query = request.GET.get('q')
     if query:
