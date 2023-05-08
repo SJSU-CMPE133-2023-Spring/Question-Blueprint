@@ -2,17 +2,16 @@
 
 {% block content %}
 <div class="container my-5">
-  <h1 class="mb-4">Search Results</h1>
+  <h1 class="mb-4 text-center">Search Results</h1>
   <div class="row">
     {% if results %}
       {% for result in results %}
         <div class="col-lg-6">
           <div class="card mb-4">
             <div class="card-body">
-              <h5 class="card-title"><a href="{{ result.get_absolute_url }}" class="text-decoration-none">{{ result.title }}</a></h5>
-              <p class="card-text">{{ result.description }}</p>
-              <div class="text-end">
-                <small class="text-muted">{{ result.pub_date }}</small>
+                <h5 class="card-title"><a href="{{ result.get_absolute_url }}" class="text-decoration-none">{{ result.title }}</a></h5>
+                <div class="text-end">
+                <small class="text-muted">Posted on: {{ result.created_date }}</small>
               </div>
             </div>
           </div>

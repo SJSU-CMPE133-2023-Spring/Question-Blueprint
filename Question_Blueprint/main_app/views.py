@@ -344,6 +344,10 @@ def upvote(request, pk):
 
 def search(request):
     query = request.GET.get('q')
-    print(query)
-    results = Question.objects.filter(Q(title__icontains=query) | Q(content__icontains=query))
-    return render(request, 'main_app/search.html', {'results': results})
+    if query:
+        results = Question.objects.filter(Q(title__icontains=query) | Q(content__icontains=query))
+
+        if results:
+            return render(request, 'main_app/search.html', {'results': results})
+    
+    return render(request, 'main_app/not_found_page.html')

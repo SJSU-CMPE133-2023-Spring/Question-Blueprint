@@ -68,10 +68,11 @@
           {% endif %}
         </ul>
 
-          <form method="get" action="{% url 'main_app:search' %}">
-            <input id="search-input" type="text" name="q" placeholder="Search..." />
-            <button type="submit">Search</button>
+          <form class="d-flex" method="get" action="{% url 'main_app:search' %}">
+            <input class="form-control me-2" id="search-input" type="text" name="q" placeholder="Search...">
+            <button class="btn btn-outline-primary" type="submit">Search</button>
           </form>
+
 
         <div id="search-results"></div>
 
