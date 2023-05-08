@@ -162,23 +162,6 @@ class QuestionDeleteView( UserPassesTestMixin, LoginRequiredMixin, DeleteView):
         return render(self.request, 'error.html')
     
 
-# Question Upvote View
-@login_required
-def question_upvote(request, pk):
-    question = get_object_or_404(Question, id=pk)
-
-    if request.method == "POST":
-        upvote = QuestionUpvote.objects.filter(question=question, user=request.user).first()
-
-        if upvote:
-            upvote.delete()
-        else:
-            QuestionUpvote.objects.create(question=question, user=request.user)
-            print(f"Question Upvote success")
-    
-    return redirect('main_app:question_detail_view', pk)
-
-
 
 # Answer
 # class AnswerDetailView(CreateView):
@@ -314,3 +297,31 @@ def contains_alphabet(input_string):
         if char.isalpha():
             return True
     return False
+
+
+@login_required
+def upvote(request, pk):
+
+    if request.method == "POST":
+        vote_type = request.POST.get("vote_type")
+        if vote_type == "question":
+            question = get_object_or_404(Question, id=pk)
+            upvote = QuestionUpvote.objects.filter(question=question, user=request.user).first()
+            if upvote:
+                upvote.delete()
+            else:
+                QuestionUpvote.objects.create(question=question, user=request.user)
+                print(f"Question Upvote success")
+           
+        
+        if vote_type == "answer":
+            ans_id = request.POST.get('ans_id')
+            answer = get_object_or_404(Answer, id=ans_id)
+            upvote = AnswerUpvote.objects.filter(answer=answer, user=request.user).first()
+            if upvote:
+                upvote.delete()
+            else:
+                AnswerUpvote.objects.create(answer=answer, user=request.user)
+               
+                print(f"Answer Upvote success")
+        return redirect('main_app:question_detail_view', pk)
