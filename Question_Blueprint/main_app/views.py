@@ -342,8 +342,34 @@ def upvote(request, pk):
 
 # Search
 
-def search(request):
-    query = request.GET.get('q')
-    print(query)
-    results = Question.objects.filter(Q(title__icontains=query) | Q(content__icontains=query))
-    return render(request, 'main_app/search.html', {'results': results})
+class SearchView(ListView):
+    model = Question
+    template_name = 'main_app/results.html'
+    queryset = Question.objects.all()
+    # | Answer.objects.all()
+
+    # def get_context_data(self, **kwargs):
+    #     questions = self.model.objects.all()
+    #     context = super().get_context_data(**kwargs)
+    #     context['query'] = self.request.GET.get('q')
+    #     return context
+
+    # model = Question
+    # ordering = ['-created_date']
+    # template_name = 'main_app/question_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        questions = self.model.objects.all()
+        sort_by = self.request.GET.get('sort', 'title')
+        # if sort_by == 'created_date':
+        #     sorted_questions = questions.order_by(
+        #         '-created_date', '-upvote_num')
+        # else:
+        #     sorted_questions = questions.order_by(
+        #         '-upvote_num', '-created_date')
+        paginator = Paginator(sorted_questions, 4)  # 3 questions per page
+        page_number = self.request.GET.get('page', 1)
+        page_obj = paginator.get_page(page_number)
+        context['sorted_questions'] = page_obj
+        return context
