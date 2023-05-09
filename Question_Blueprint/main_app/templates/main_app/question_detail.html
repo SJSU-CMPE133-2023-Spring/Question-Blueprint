@@ -86,31 +86,36 @@ Detail {% endblock %} {% block content %}
 
 
 
+
+<!-- its broken here for model -->
+
 <div class="card mb-3">
-    {% for ans in sorted_answers %}
-    <div class="d-flex justify-content-between align-items-center">
-        <form method="POST" action="{% url 'main_app:upvote' single_question.id %}">
-            {% csrf_token %}
-            <input type="hidden" name="pk" value="{{single_question.id}}">
-            <input type="hidden" name="ans_id" value="{{ans.id}}">
+  {% for ans in sorted_answers %}
+  <div class="d-flex justify-content-between align-items-center">
+    <form method="POST" action="{% url 'main_app:upvote' single_question.id %}">
+      {% csrf_token %}
+      <input type="hidden" name="pk" value="{{single_question.id}}">
+      <input type="hidden" name="ans_id" value="{{ans.id}}">
             <input type="hidden" name="vote_type" value="answer">
             <div class="d-flex align-items-center gap-3">
-                <button type="submit" class="btn btn-primary rounded-pill px-4 py-2">
-                    <i class="fas fa-caret-up fa-lg"></i>
-                </button>
-                <div class="text-center">
-                    <div class="fw-bold">{{ ans.answer_vote.count }}</div>
+              <button type="submit" class="btn btn-primary rounded-pill px-4 py-2">
+                <i class="fas fa-caret-up fa-lg"></i>
+              </button>
+              <div class="text-center">
+                <div class="fw-bold">{{ ans.answer_vote.count }}</div>
                     <div class="text-muted small">votes</div>
-                </div>
+                  </div>
             </div>
-        </form>
+          </form>
         <div class="card-body">
-            <p class="card-text text-center">{{ ans.content }}</p>
-            <small class="text-muted">Posted by: <a href="{% url 'profile_view' ans.user.username %}">{{ ans.user.username }}</a> on {{ ans.created_date }}</small>
+          <p class="card-text text-center">{{ ans.content }}</p>
+          <small class="text-muted">Posted by: <a href="{% url 'profile_view' ans.user.username %}">{{ ans.user.username }}</a> on {{ ans.created_date }}</small>
         </div>
     </div>
     {% endfor %}
-</div>
+  </div>
+  
+<!-- its broken here for model -->
 
 
 
