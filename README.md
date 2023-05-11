@@ -135,6 +135,7 @@ List any dependencies or prerequisites required to run the project. Be sure to i
  8. Search feature
  9. Question recommendation feature
  10. Text to speech feature
+ 11. Inappropriate Language Checker
 
 ### Contributing
 
@@ -149,14 +150,17 @@ List any dependencies or prerequisites required to run the project. Be sure to i
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-<!-- ### Contact
+### Contact
 
-Here you can provide information on how to contact you or the project team. This can include email addresses, social media handles, or a link to a website.
+  - Hunter Adam: 
+  - Tan Dao: tankhanhdao@gmail.com
+  - Vivekanand Koya: 
+  - Yohannes Habtemariam:
+  - Sahiti Hibane:
 
 ### Acknowledgements
 
-Here you can give credit to any individuals or organizations that have contributed to the project or provided support. -->
-
+We would like to acknowledge the invaluable contributions of Hunter Adam, Tan Dao, Vivekanand Koya, Yohannes Habtemariam, and Sahiti Hibane to this project. Their dedication, expertise, and collaborative spirit have been instrumental in the success of this endeavor.
 
 # Documentation
 ![UML   Sequence Diagrams1024_4](https://user-images.githubusercontent.com/67130044/231318279-82462275-7cae-4a80-8628-20926ff07fa1.png)
