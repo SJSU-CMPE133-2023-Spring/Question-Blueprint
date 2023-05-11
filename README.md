@@ -98,6 +98,10 @@ List any dependencies or prerequisites required to run the project. Be sure to i
    ```sh
    pip install -r requirements.txt
    ```
+   >**Note**: While running it on mac OS, if there is issue installing gensim, remove the gensim dependency from requirements.txt file and manually intall it using the command: 
+   ```sh 
+   pip install gensim
+   ```
 
 4. Run the application:
   > **Note:** Make sure you are in the folder contains the file called "manage.py"
