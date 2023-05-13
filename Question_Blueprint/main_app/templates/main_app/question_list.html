@@ -62,6 +62,13 @@
   {% endfor %}
 </div>
 
+<style>
+  .page-item {
+    margin-right: 3px; /* increase the right margin */
+    margin-left: 3px; /* increase the left margin */
+  }
+</style>
+
 {% if sorted_questions.has_other_pages %}
   <ul class="pagination justify-content-center mt-4">
     {% if sorted_questions.has_previous %}
