@@ -1,0 +1,77 @@
+.dark-mode {
+    background-color: #333;
+    color: #ddd;
+}
+
+.dark-mode #dark-mode-toggle {
+    background-color: #ddd;
+    color: #333;
+}
+
+.dark-mode .card {
+    background-color: #686d6e;
+    color: #ddd;
+}
+
+.dark-mode .card #dark-mode-toggle {
+    background-color: #333;
+    color: #ddd;
+}
+
+.dark-mode input[type=text],
+.dark-mode input[type=email],
+.dark-mode input[type=password],
+.dark-mode select {
+  background-color: #222;
+  color: #ddd;
+  border: 1px solid #ddd;
+}
+
+.dark-mode .list-group-item {
+  background-color: #686d6e;
+  border-color: #1a5863;
+}
+
+.dark-mode .list-group-item .d-flex .fw-bold {
+  color: #fff;
+}
+
+.dark-mode .list-group-item .d-flex .fw-bold:nth-child(2) {
+  color: #ccc;
+}
+
+.dark-mode a {
+    color: #8cd0e3;
+}
+
+.dark-mode ::placeholder {
+    color: #ccc;
+}
+
+.dark-mode .btn.btn-primary {
+    background-color: #648e96;
+    color: #a0ccd4;
+}
+
+.dark-mode .textarea {
+  background-color: #222;
+  color: #ccc;
+}
+
+.dark-mode .form-text {
+  color: #ccc;
+}
+
+.dark-mode .form-label {
+  color:#fff;
+}
+
+.dark-mode .pagination .page-link {
+  background-color: #807d7d;
+  color: #ffffff;
+}
+
+.dark-mode .pagination .page-item.active .page-link {
+  background-color: #615d5c;
+  color: #ffffff;
+}

@@ -1,15 +1,48 @@
 {% extends "base_nav.html" %} {% block content%}
-<div class="container py-5">
-  <div class="jumbotron jumbotron-fluid">
-  <div class="container text-center">
-    <h1 class="display-4">Ask and Answer Questions</h1>
-    <p class="lead">Welcome to our FAQs: where the questions are plenty and the answers are scarce.</p>
 
+<style>
+  .carousel-caption{
+    font-family: 'Crimson Text';
 
-    <a href="{% url 'main_app:question_view' %}" class="btn btn-primary btn-lg my-3">Question List</a>
-    <a href="{% url 'main_app:question_ask_view' %}" class="btn btn-primary btn-lg">Ask a Question</a>
+  }
+</style>
+<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img class="d-block w-100" src="/static/logo-color.png" alt="First slide">
+      <div class="carousel-caption d-none d-md-block">
+        <h1 class="display-4">Ask and Answer Questions</h1>
+        <p class="lead">Welcome to our FAQs: where the questions are plenty and the answers are scarce.</p>
+        <a href="{% url 'main_app:question_view' %}" class="btn btn-primary btn-lg my-3" style="margin-right: 25px;">Question List</a>
+       
+        <a href="{% url 'main_app:question_ask_view' %}" class="btn btn-primary btn-lg">Ask a Question</a>
+      </div>
+      <div>{{ User.first_name }}</div>
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="/static/logo-black.png" alt="Second slide">
+      <div class="carousel-caption d-none d-md-block" style="color: black;">
+        <h1 class="display-4">Ask and Answer Questions</h1>
+        <p class="lead">Welcome to our FAQs: where the questions are plenty and the answers are scarce.</p>
+        <a href="{% url 'main_app:question_view' %}" class="btn btn-light btn-lg my-3" style="margin-right: 25px;">Question List</a>
+        
+        <a href="{% url 'main_app:question_ask_view' %}" class="btn btn-dark btn-lg">Ask a Question</a>
+      </div>
+      <div>{{ User.first_name }}</div>
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="/static/logo-white.png" alt="Third slide">
+      <div class="carousel-caption d-none d-md-block">
+        <h1 class="display-4">Ask and Answer Questions</h1>
+        <p class="lead">Welcome to our FAQs: where the questions are plenty and the answers are scarce.</p>
+        <a href="{% url 'main_app:question_view' %}" class="btn btn-dark btn-lg my-3" style="margin-right: 25px;">Question List</a>
+ 
+        <a href="{% url 'main_app:question_ask_view' %}" class="btn btn-light btn-lg">Ask a Question</a>
+      </div>
+      <div>{{ User.first_name }}</div>
+    </div>
   </div>
 </div>
-</div>
-<div>{{ User.first_name }}</div>
+
+
 {% endblock %}
